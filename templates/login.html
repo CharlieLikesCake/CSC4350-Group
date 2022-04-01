@@ -4,6 +4,13 @@
 
 <body>
     <h1>Log In</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="{{ category }}"><b>{{message}}</b></div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     <form method="POST" action="/login">
         <input type="text" name="username" placeholder="Username">
         <input type="submit" value="Submit">
