@@ -6,6 +6,9 @@ from flask_login import login_user, current_user, LoginManager, logout_user
 from flask_login.utils import login_required
 from models import User
 
+import recipe
+import random
+
 login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
@@ -75,7 +78,24 @@ def logout():
 @app.route("/index")
 @login_required
 def index():
-    return flask.render_template("index.html")
+    q = ["chicken", "salad", "soup", "pasta", "curry", "sandwich"]
+    r = random.randrange(0, 6, 1)
+    recipes = recipe.getRandomRecipeList(q[r])
+
+    return flask.render_template(
+        "index.html",
+        username=current_user.username,
+        q=q[r],
+        recipes=recipes,
+        len_recipes=len(recipes),
+    )
+
+
+# route for saved recipe list
+@app.route("/profile")
+@login_required
+def profile():
+    return "this is the profile/saved recipes page"
 
 
 if __name__ == "__main__":

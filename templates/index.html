@@ -3,8 +3,33 @@
 <head></head>
 
 <body>
-    <a href="/logout">Log out</a>
-    This is the homepage.
+    <a href="{{ url_for('logout') }}">Log out</a>
+    This is the homepage. Currently logged in as {{username}}
+    <a href="{{ url_for('profile') }}">Saved Recipes</a>
+
+    <div>
+        <form>
+            <input type="text" placeholder="Search Recipes">
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+
+    <div>
+        <h1>Looking for something new? Try these {{q}} dishes!</h1>
+    </div>
+    {% for i in range(len_recipes) %}
+    <div>
+        <div>
+            <a href="{{ recipes[i].details }}" target="_blank">{{recipes[i].label}}</a>
+        </div>
+        <div>
+            Source: <a href="{{ recipes[i].url }}" target="_blank">{{ recipes[i].source }}</a>
+        </div>
+        <div>
+            <a><img src="{{ recipes[i].image }}" /></a>
+        </div>
+    </div>
+    {% endfor %}
 </body>
 
 </html>
