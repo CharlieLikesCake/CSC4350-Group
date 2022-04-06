@@ -27,7 +27,6 @@ def getRandomRecipeList(q):
                 "image": hit["recipe"]["image"],
                 "source": hit["recipe"]["source"],
                 "url": hit["recipe"]["url"],
-                "details": hit["recipe"]["shareAs"],
             }
         )
 

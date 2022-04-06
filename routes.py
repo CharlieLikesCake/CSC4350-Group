@@ -91,6 +91,12 @@ def index():
     )
 
 
+@app.route("/details")
+@login_required
+def details():
+    return "details page"
+
+
 # route for saved recipe list
 @app.route("/profile")
 @login_required

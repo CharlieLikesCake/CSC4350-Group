@@ -20,7 +20,7 @@
     {% for i in range(len_recipes) %}
     <div>
         <div>
-            <a href="{{ recipes[i].details }}" target="_blank">{{recipes[i].label}}</a>
+            <a href="{{ url_for('details') }}">{{recipes[i].label}}</a>
         </div>
         <div>
             Source: <a href="{{ recipes[i].url }}" target="_blank">{{ recipes[i].source }}</a>
