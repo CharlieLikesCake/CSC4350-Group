@@ -17,19 +17,40 @@
     <div>
         <h1>Looking for something new? Try these {{q}} dishes!</h1>
     </div>
+
     {% for i in range(len_recipes) %}
     <div>
-        <div>
-            <a href="{{ url_for('details') }}">{{recipes[i].label}}</a>
-        </div>
+
+        <form id="form__submit" action="{{ url_for('details') }}" method="POST">
+            <a href="#" onclick="submitForm()">{{recipes[i].label}}</a>
+            <div id="id">
+                <input name="id" value="{{ recipes[i].id }}" readonly />
+            </div>
+        </form>
+
         <div>
             Source: <a href="{{ recipes[i].url }}" target="_blank">{{ recipes[i].source }}</a>
         </div>
+
         <div>
             <a><img src="{{ recipes[i].image }}" /></a>
         </div>
     </div>
     {% endfor %}
+
+    <script>
+        const div = document.querySelectorAll("#id");
+
+        for (let i = 0; i < div.length; i++) {
+            div[i].style.visibility = 'hidden';
+        }
+
+        function submitForm() {
+            let form = document.getElementById("form__submit");
+            form.submit();
+        }
+    </script>
+
 </body>
 
 </html>
