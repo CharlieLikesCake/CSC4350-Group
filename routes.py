@@ -91,10 +91,12 @@ def index():
     )
 
 
-@app.route("/details")
+@app.route("/details", methods=["GET", "POST"])
 @login_required
 def details():
-    return "details page"
+    id = flask.request.form.get("id")
+    recipeDetails = recipe.getRecipeDetails(id)
+    return flask.render_template("details.html", recipeDetails=recipeDetails)
 
 
 # route for saved recipe list

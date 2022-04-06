@@ -27,7 +27,24 @@ def getRandomRecipeList(q):
                 "image": hit["recipe"]["image"],
                 "source": hit["recipe"]["source"],
                 "url": hit["recipe"]["url"],
+                # split the uri in two at the target ("_") to get id at the end
+                "id": hit["recipe"]["uri"].split("_", 1)[1],
             }
         )
 
     return randomRecipeList
+
+
+def getRecipeDetails(id):
+    newUrl = BASE_URL + "/" + id
+
+    params = {
+        "type": "public",
+        "app_id": os.getenv("APP_ID"),
+        "app_key": os.getenv("APP_KEY"),
+        "id": id,
+    }
+
+    response = requests.get(newUrl, params=params).json()["recipe"]
+
+    return response
