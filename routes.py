@@ -96,7 +96,30 @@ def index():
 def details():
     id = flask.request.form.get("id")
     recipeDetails = recipe.getRecipeDetails(id)
-    return flask.render_template("details.html", recipeDetails=recipeDetails)
+    mealReco = recipeDetails["mealType"]
+    cuisineReco = recipeDetails["cuisineType"]
+    ingReco = recipeDetails["ingredients"]
+    ingReco = ingReco[0]["food"]
+    ingcatReco = recipeDetails["ingredients"]
+    ingcatReco = ingcatReco[0]["foodCategory"]
+    healthReco = recipeDetails["healthLabels"]
+
+    mealRecipes = recipe.getRandomRecipeList(mealReco)
+    cuisineRecipes = recipe.getRandomRecipeList(cuisineReco)
+    ingRecipes = recipe.getRandomRecipeList(ingReco)
+    ingcatRecipes = recipe.getRandomRecipeList(ingcatReco)
+    healthRecipes = recipe.getRandomRecipeList(healthReco)
+
+
+    return flask.render_template(
+        "details.html", 
+        recipeDetails=recipeDetails,
+        mealRecipes=mealRecipes,
+        cuisineRecipes=cuisineRecipes,
+        ingRecipes=ingRecipes,
+        ingcatRecipes=ingcatRecipes,
+        healthRecipes=healthRecipes
+        )
 
 
 # route for saved recipe list

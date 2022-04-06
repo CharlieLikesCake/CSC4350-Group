@@ -3,7 +3,112 @@
 <head></head>
 
 <body>
-    <div>{{recipeDetails.label}}</div>
+    <div>
+        <div>
+            {{recipeDetails.label}}
+        </div>
+
+        <div>
+            Source: <a href="{{ recipeDetails.url }}" target="_blank">{{ recipeDetails.source }}</a>
+        </div>
+
+        <div>
+            <a><img src="{{ recipeDetails.image }}" /></a>
+        </div>
+    </div>
+<br />
+<br />
+
+<h1>Recommendations:</h1>
+
+    {% for i in range(1) %}
+    
+    <div>
+        <p>Based on meal:</p>
+        <div>
+            {{mealRecipes[i].label}}
+        </div>     
+
+        <div>
+            Source: <a href="{{ mealRecipes[i].url }}" target="_blank">{{ mealRecipes[i].source }}</a>
+        </div>
+
+        <div>
+            <a><img src="{{ mealRecipes[i].image }}" /></a>
+        </div>
+    </div>
+    <br />
+
+    
+    <div>
+        <p>Based on cuisine:</p>
+        <div>
+            {{cuisineRecipes[i].label}}
+        </div>     
+
+        <div>
+            Source: <a href="{{ cuisineRecipes[i].url }}" target="_blank">{{ cuisineRecipes[i].source }}</a>
+        </div>
+
+        <div>
+            <a><img src="{{ cuisineRecipes[i].image }}" /></a>
+        </div>
+    </div>
+    <br />
+
+
+    <div>
+        <p>Based on ingredient:</p>
+        <div>
+            {{ingRecipes[i].label}}
+        </div>     
+
+        <div>
+            Source: <a href="{{ ingRecipes[i].url }}" target="_blank">{{ ingRecipes[i].source }}</a>
+        </div>
+
+        <div>
+            <a><img src="{{ ingRecipes[i].image }}" /></a>
+        </div>
+    </div>
+    <br />
+
+
+    <div>
+        <p>Based on ingredient category:</p>
+        <div>
+            {{ingcatRecipes[i].label}}
+        </div>     
+
+        <div>
+            Source: <a href="{{ ingcatRecipes[i].url }}" target="_blank">{{ ingcatRecipes[i].source }}</a>
+        </div>
+
+        <div>
+            <a><img src="{{ ingcatRecipes[i].image }}" /></a>
+        </div>
+    </div>
+    <br />
+
+
+    <div>
+        <p>Based on health:</p>
+        <div>
+            {{healthRecipes[i].label}}
+        </div>     
+
+        <div>
+            Source: <a href="{{ healthRecipes[i].url }}" target="_blank">{{ healthRecipes[i].source }}</a>
+        </div>
+
+        <div>
+            <a><img src="{{ healthRecipes[i].image }}" /></a>
+        </div>
+    </div>
+    <br />
+    {% endfor %}
+
+
 </body>
 
 </html>
