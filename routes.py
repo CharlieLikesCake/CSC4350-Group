@@ -74,6 +74,16 @@ def logout():
     return flask.redirect("login")
 
 
+@app.route("/search", methods=["GET", "POST"])
+def search_recipe():
+    if flask.request.method == "POST":
+        data = flask.request.form.get("keyword")
+    recipes = recipe.getRandomRecipeList(data)
+    return flask.render_template(
+        "search.html", recipes=recipes, len_recipes=len(recipes)
+    )
+
+
 # route for homepage
 @app.route("/index")
 @login_required

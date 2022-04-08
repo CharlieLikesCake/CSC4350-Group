@@ -8,9 +8,9 @@
     <a href="{{ url_for('profile') }}">Saved Recipes</a>
 
     <div>
-        <form>
-            <input type="text" placeholder="Search Recipes">
-            <input type="submit" value="Search" />
+        <form method="POST" action="/search">
+            <input type="text" name="keyword">
+            <input type="submit" value="Search">
         </form>
     </div>
 
