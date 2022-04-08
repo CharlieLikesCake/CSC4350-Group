@@ -1,0 +1,17 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    {% for i in range(len_recipes) %}
+    <div>
+        {{recipes[i].label}}
+    </div>
+    <div>
+        <img src="{{ recipes[i].image }}" />
+    </div>
+    {% endfor %}
+</body>
+
+</html>
