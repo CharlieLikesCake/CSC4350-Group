@@ -1,10 +1,11 @@
+from black import re_compile_maybe_verbose
 from app import app, db
 import os
 
 import flask
 from flask_login import login_user, current_user, LoginManager, logout_user
 from flask_login.utils import login_required
-from models import User
+from models import RecipeData, User
 
 import recipe
 import random
@@ -87,7 +88,7 @@ def index():
         username=current_user.username,
         q=q[r],
         recipes=recipes,
-        len_recipes=len(recipes),
+        len_recipes=1,
     )
 
 
@@ -110,23 +111,59 @@ def details():
     ingcatRecipes = recipe.getRandomRecipeList(ingcatReco)
     healthRecipes = recipe.getRandomRecipeList(healthReco)
 
-
     return flask.render_template(
-        "details.html", 
+        "details.html",
         recipeDetails=recipeDetails,
         mealRecipes=mealRecipes,
         cuisineRecipes=cuisineRecipes,
         ingRecipes=ingRecipes,
         ingcatRecipes=ingcatRecipes,
-        healthRecipes=healthRecipes
-        )
+        healthRecipes=healthRecipes,
+    )
 
 
-# route for saved recipe list
-@app.route("/profile")
+@app.route("/profile", methods=["POST", "GET"])
 @login_required
 def profile():
-    return "this is the profile/saved recipes page"
+    userdata = User.query.all()
+    data = RecipeData.query.all()
+    label_list = []
+    image_list = []
+    url_list = []
+
+    for i in data:
+        label_list.append(i.label)
+        image_list.append(i.image)
+        url_list.append(i.url)
+
+    num_label = len(label_list)
+
+    return flask.render_template(
+        # display database information here
+        "favorite.html",
+        username=current_user.username,
+        label=label_list,
+        image=image_list,
+        url=url_list,
+        num_label=num_label,
+    )
+
+
+@app.route("/favorite", methods=["POST"])
+def favorite():
+    username = current_user.username
+    recipeDetail = flask.request.form.get("recipeDetail")
+    recipeImage = flask.request.form.get("recipeImage")
+    recipeURL = flask.request.form.get("recipeURL")
+    new_saved = RecipeData(
+        label=recipeDetail,
+        image=recipeImage,
+        url=recipeURL,
+    )
+
+    db.session.add(new_saved)
+    db.session.commit()
+    return flask.redirect("index")
 
 
 if __name__ == "__main__":
