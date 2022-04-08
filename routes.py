@@ -1,10 +1,11 @@
+from black import re_compile_maybe_verbose
 from app import app, db
 import os
 
 import flask
 from flask_login import login_user, current_user, LoginManager, logout_user
 from flask_login.utils import login_required
-from models import User
+from models import RecipeData, User
 
 import recipe
 import random
@@ -91,19 +92,27 @@ def index():
     )
 
 
-@app.route("/details", methods=["GET", "POST"])
-@login_required
-def details():
-    id = flask.request.form.get("id")
-    recipeDetails = recipe.getRecipeDetails(id)
-    return flask.render_template("details.html", recipeDetails=recipeDetails)
-
-
-# route for saved recipe list
-@app.route("/profile")
+@app.route("/profile", methods=["POST", "GET"])
 @login_required
 def profile():
-    return "this is the profile/saved recipes page"
+    return flask.render_template(
+        # display database information here
+        "favorite.html",
+        username=current_user.username,
+    )
+
+
+@app.route("/favorite", methods=["POST", "GET"])
+def favorite():
+    # save the information to database
+    if flask.request.method == "POST":
+        data = flask.request.form
+        detail = data.get("favorite")
+        new_saved = RecipeData(
+            detail=detail,
+        )
+        db.session.add(new_saved)
+        db.session.commit()
 
 
 if __name__ == "__main__":

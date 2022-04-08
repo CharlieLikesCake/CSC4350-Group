@@ -7,4 +7,9 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), unique=True, nullable=False)
 
 
+class RecipeData(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    favorite = db.Column(db.String(80))
+
+
 db.create_all()
