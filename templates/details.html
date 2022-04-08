@@ -16,18 +16,23 @@
             <a><img src="{{ recipeDetails.image }}" /></a>
         </div>
     </div>
-<br />
-<br />
+    <br />
+    <br />
 
-<h1>Recommendations:</h1>
+    <h1>Recommendations:</h1>
 
     {% for i in range(1) %}
-    
+
     <div>
         <p>Based on meal:</p>
         <div>
-            {{mealRecipes[i].label}}
-        </div>     
+            <form id="form__submit" action="{{ url_for('details') }}" method="POST">
+                <a href="#" onclick="submitForm()">{{mealRecipes[i].label}}</a>
+                <div id="id">
+                    <input name="id" value="{{ mealRecipes[i].id }}" readonly />
+                </div>
+            </form>
+        </div>
 
         <div>
             Source: <a href="{{ mealRecipes[i].url }}" target="_blank">{{ mealRecipes[i].source }}</a>
@@ -39,12 +44,17 @@
     </div>
     <br />
 
-    
+
     <div>
         <p>Based on cuisine:</p>
         <div>
-            {{cuisineRecipes[i].label}}
-        </div>     
+            <form id="form__submit" action="{{ url_for('details') }}" method="POST">
+                <a href="#" onclick="submitForm()">{{cuisineRecipes[i].label}}</a>
+                <div id="id">
+                    <input name="id" value="{{ cuisineRecipes[i].id }}" readonly />
+                </div>
+            </form>
+        </div>
 
         <div>
             Source: <a href="{{ cuisineRecipes[i].url }}" target="_blank">{{ cuisineRecipes[i].source }}</a>
@@ -60,8 +70,13 @@
     <div>
         <p>Based on ingredient:</p>
         <div>
-            {{ingRecipes[i].label}}
-        </div>     
+            <form id="form__submit" action="{{ url_for('details') }}" method="POST">
+                <a href="#" onclick="submitForm()">{{ingRecipes[i].label}}</a>
+                <div id="id">
+                    <input name="id" value="{{ ingRecipes[i].id }}" readonly />
+                </div>
+            </form>
+        </div>
 
         <div>
             Source: <a href="{{ ingRecipes[i].url }}" target="_blank">{{ ingRecipes[i].source }}</a>
@@ -77,8 +92,13 @@
     <div>
         <p>Based on ingredient category:</p>
         <div>
-            {{ingcatRecipes[i].label}}
-        </div>     
+            <form id="form__submit" action="{{ url_for('details') }}" method="POST">
+                <a href="#" onclick="submitForm()">{{ingcatRecipes[i].label}}</a>
+                <div id="id">
+                    <input name="id" value="{{ ingcatRecipes[i].id }}" readonly />
+                </div>
+            </form>
+        </div>
 
         <div>
             Source: <a href="{{ ingcatRecipes[i].url }}" target="_blank">{{ ingcatRecipes[i].source }}</a>
@@ -94,8 +114,13 @@
     <div>
         <p>Based on health:</p>
         <div>
-            {{healthRecipes[i].label}}
-        </div>     
+            <form id="form__submit" action="{{ url_for('details') }}" method="POST">
+                <a href="#" onclick="submitForm()">{{healthRecipes[i].label}}</a>
+                <div id="id">
+                    <input name="id" value="{{ healthRecipes[i].id }}" readonly />
+                </div>
+            </form>
+        </div>
 
         <div>
             Source: <a href="{{ healthRecipes[i].url }}" target="_blank">{{ healthRecipes[i].source }}</a>
@@ -108,6 +133,18 @@
     <br />
     {% endfor %}
 
+    <script>
+        const div = document.querySelectorAll("#id");
+
+        for (let i = 0; i < div.length; i++) {
+            div[i].style.visibility = 'hidden';
+        }
+
+        function submitForm() {
+            let form = document.getElementById("form__submit");
+            form.submit();
+        }
+    </script>
 
 </body>
 
