@@ -4,14 +4,43 @@
 </head>
 
 <body>
+    <div>
+        <form method="POST" action="/search">
+            <input type="text" name="keyword" placeholder="Search for Recipes">
+            <input type="submit" value="Search">
+        </form>
+    </div>
     {% for i in range(len_recipes) %}
     <div>
-        {{recipes[i].label}}
+        <form id="form__submit" action="{{ url_for('details') }}" method="POST">
+            <a href="#" onclick="submitForm()">{{recipes[i].label}}</a>
+            <div id="id">
+                <input name="id" value="{{ recipes[i].id }}" readonly />
+            </div>
+        </form>
     </div>
+
+    <div>
+        Source: <a href="{{ recipes[i].url }}" target="_blank">{{ recipes[i].source }}</a>
+    </div>
+
     <div>
         <img src="{{ recipes[i].image }}" />
     </div>
     {% endfor %}
+
+    <script>
+        const div = document.querySelectorAll("#id");
+
+        for (let i = 0; i < div.length; i++) {
+            div[i].style.visibility = 'hidden';
+        }
+
+        function submitForm() {
+            let form = document.getElementById("form__submit");
+            form.submit();
+        }
+    </script>
 </body>
 
 </html>

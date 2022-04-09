@@ -74,6 +74,7 @@ def logout():
     return flask.redirect("login")
 
 
+#route for search box
 @app.route("/search", methods=["GET", "POST"])
 def search_recipe():
     if flask.request.method == "POST":
