@@ -1,4 +1,3 @@
-from black import re_compile_maybe_verbose
 from app import app, db
 import os
 
