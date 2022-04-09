@@ -10,6 +10,7 @@
             <input type="submit" value="Search">
         </form>
     </div>
+    <a href="{{ url_for('index') }}">Main Page</a>
     {% for i in range(len_recipes) %}
     <div>
         <form id="form__submit" action="{{ url_for('details') }}" method="POST">
