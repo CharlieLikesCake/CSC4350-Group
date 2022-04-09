@@ -85,6 +85,20 @@ def search_recipe():
     )
 
 
+@app.route("/recommendations", methods=["GET", "POST"])
+def recommendations():
+    if flask.request.method == "POST":
+        data = flask.request.form
+    recipes = recipe.getRandomRecipeList(data["keyword"])
+    return flask.render_template(
+        "recommendations.html",
+        recipes=recipes,
+        len_recipes=len(recipes),
+        category=data["category"],
+        keyword=data["keyword"],
+    )
+
+
 # route for homepage
 @app.route("/index")
 @login_required
@@ -98,7 +112,7 @@ def index():
         username=current_user.username,
         q=q[r],
         recipes=recipes,
-        len_recipes=1,
+        len_recipes=len(recipes),
     )
 
 
@@ -115,20 +129,14 @@ def details():
     ingcatReco = ingcatReco[0]["foodCategory"]
     healthReco = recipeDetails["healthLabels"]
 
-    mealRecipes = recipe.getRandomRecipeList(mealReco)
-    cuisineRecipes = recipe.getRandomRecipeList(cuisineReco)
-    ingRecipes = recipe.getRandomRecipeList(ingReco)
-    ingcatRecipes = recipe.getRandomRecipeList(ingcatReco)
-    healthRecipes = recipe.getRandomRecipeList(healthReco)
-
     return flask.render_template(
         "details.html",
         recipeDetails=recipeDetails,
-        mealRecipes=mealRecipes,
-        cuisineRecipes=cuisineRecipes,
-        ingRecipes=ingRecipes,
-        ingcatRecipes=ingcatRecipes,
-        healthRecipes=healthRecipes,
+        mealReco=mealReco,
+        cuisineReco=cuisineReco,
+        ingReco=ingReco,
+        ingcatReco=ingcatReco,
+        healthReco=healthReco,
     )
 
 
