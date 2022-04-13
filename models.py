@@ -12,6 +12,8 @@ class RecipeData(db.Model):
     label = db.Column(db.String(5000))
     image = db.Column(db.String(5000))
     url = db.Column(db.String(5000))
+    rating = db.Column(db.Integer)
+    comment = db.Column(db.String(500))
 
 
 db.create_all()

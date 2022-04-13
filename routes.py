@@ -147,11 +147,15 @@ def profile():
     label_list = []
     image_list = []
     url_list = []
+    rating_list = []
+    comment_list = []
 
     for i in data:
         label_list.append(i.label)
         image_list.append(i.image)
         url_list.append(i.url)
+        rating_list.append(i.rating)
+        comment_list.append(i.comment)
 
     num_label = len(label_list)
 
@@ -162,6 +166,8 @@ def profile():
         label=label_list,
         image=image_list,
         url=url_list,
+        rating=rating_list,
+        comment=comment_list,
         num_label=num_label,
     )
 
@@ -181,6 +187,21 @@ def favorite():
     db.session.add(new_saved)
     db.session.commit()
     return flask.redirect("index")
+
+
+@app.route("/rating", methods=["POST"])
+def rating():
+    if flask.request.method == "POST":
+        rating = flask.request.form.get("rate", type=int)
+        comment = flask.request.form.get("comment")
+        rate_saved = RecipeData(
+            rating=rating,
+            comment=comment,
+        )
+        db.session.add(rate_saved)
+        db.session.commit()
+
+    return flask.redirect("/index")
 
 
 if __name__ == "__main__":
