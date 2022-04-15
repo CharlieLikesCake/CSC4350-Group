@@ -12,10 +12,30 @@
     {% endif %}
     {% endwith %}
     <form method="POST" action="/login">
-        <input type="text" name="username" placeholder="Username">
-        <input type="submit" value="Submit">
+        <p>
+            <input type="text" name="username" placeholder="Username" autofocus="">
+        </p>
+        <p>
+            <input type="password" name="password" id="password" placeholder="Password">
+            <i class="bi bi-eye-slash" id="togglePassword"></i>
+        </p>
+        <input type="submit" id="submit" value="Log in">
     </form>
     <a href="{{ url_for('signup') }}">Sign Up</a>
+
+    <script>
+        const togglePassword = document.querySelector("#togglePassword");
+        const password = document.querySelector("#password");
+
+        togglePassword.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+        });
+    </script>
 </body>
 
 </html>
