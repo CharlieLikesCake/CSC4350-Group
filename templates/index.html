@@ -35,6 +35,17 @@
         <div>
             <a><img src="{{ recipes[i].image }}" /></a>
         </div>
+
+        <div>
+            <form method='POST' action="favorite">
+                <h3> Save Recipe / Details </h3>
+                recipe detail: <input type="text" name="recipeLabel" value="{{recipes[i].label}}" readonly /><br>
+                recipe image: <input type="text" name="recipeImage" value="{{recipes[i].image}}" readonly /><br>
+                recipe url: <input type="text" name="recipeURL" value="{{recipes[i].url}}" readonly /><br>
+                <input type=submit value="save" />
+            </form>
+        </div>
+
     </div>
     {% endfor %}
 
