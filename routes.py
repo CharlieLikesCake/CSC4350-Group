@@ -4,6 +4,7 @@ import os
 import flask
 from flask_login import login_user, current_user, LoginManager, logout_user
 from flask_login.utils import login_required
+from werkzeug.security import generate_password_hash, check_password_hash
 from models import RecipeData, User
 
 import recipe
@@ -34,15 +35,22 @@ def signup():
 @app.route("/signup", methods=["POST"])
 def signup_post():
     username = flask.request.form.get("username")
+    password = flask.request.form.get("password")
     user = User.query.filter_by(username=username).first()
     if len(username) < 3:
         flask.flash("Username must be at least 3 characters in length.")
         return flask.redirect(flask.url_for("signup"))
-    elif user:
+    if user:
         flask.flash("Username already in use.")
         return flask.redirect(flask.url_for("signup"))
+    if len(password) < 6:
+        flask.flash("Password must be at least 6 characters in length.")
+        return flask.redirect(flask.url_for("signup"))
     else:
-        user = User(username=username)
+        user = User(
+            username=username,
+            password=generate_password_hash(password),
+        )
         db.session.add(user)
         db.session.commit()
         flask.flash("Successfully registered.")
@@ -57,14 +65,16 @@ def login():
 @app.route("/login", methods=["POST"])
 def login_post():
     username = flask.request.form.get("username")
+    password = flask.request.form.get("password")
     user = User.query.filter_by(username=username).first()
-    if user:
-        login_user(user)
-        return flask.redirect(flask.url_for("index"))
+
+    if not user or not check_password_hash(user.password, password):
+        flask.flash("Please check your login details and try again.")
+        return flask.redirect(flask.url_for("login"))
 
     else:
-        flask.flash("Incorrect username.")
-        return flask.redirect(flask.url_for("login"))
+        login_user(user)
+        return flask.redirect(flask.url_for("index"))
 
 
 @app.route("/logout")
