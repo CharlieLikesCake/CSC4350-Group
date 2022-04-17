@@ -4,7 +4,6 @@ import os
 import flask
 from flask_login import login_user, current_user, LoginManager, logout_user
 from flask_login.utils import login_required
-from werkzeug.security import generate_password_hash, check_password_hash
 from models import RecipeData, User
 
 import recipe
@@ -35,22 +34,15 @@ def signup():
 @app.route("/signup", methods=["POST"])
 def signup_post():
     username = flask.request.form.get("username")
-    password = flask.request.form.get("password")
     user = User.query.filter_by(username=username).first()
     if len(username) < 3:
         flask.flash("Username must be at least 3 characters in length.")
         return flask.redirect(flask.url_for("signup"))
-    if user:
+    elif user:
         flask.flash("Username already in use.")
         return flask.redirect(flask.url_for("signup"))
-    if len(password) < 6:
-        flask.flash("Password must be at least 6 characters in length.")
-        return flask.redirect(flask.url_for("signup"))
     else:
-        user = User(
-            username=username,
-            password=generate_password_hash(password),
-        )
+        user = User(username=username)
         db.session.add(user)
         db.session.commit()
         flask.flash("Successfully registered.")
@@ -65,16 +57,14 @@ def login():
 @app.route("/login", methods=["POST"])
 def login_post():
     username = flask.request.form.get("username")
-    password = flask.request.form.get("password")
     user = User.query.filter_by(username=username).first()
-
-    if not user or not check_password_hash(user.password, password):
-        flask.flash("Please check your login details and try again.")
-        return flask.redirect(flask.url_for("login"))
-
-    else:
+    if user:
         login_user(user)
         return flask.redirect(flask.url_for("index"))
+
+    else:
+        flask.flash("Incorrect username.")
+        return flask.redirect(flask.url_for("login"))
 
 
 @app.route("/logout")
@@ -105,8 +95,6 @@ def recommendations():
         len_recipes=len(recipes),
         category=data["category"],
         keyword=data["keyword"],
-        original_label=data["original_label"],
-        original_id=data["original_id"],
     )
 
 
@@ -143,7 +131,6 @@ def details():
     return flask.render_template(
         "details.html",
         recipeDetails=recipeDetails,
-        original_id=id,
         mealReco=mealReco,
         cuisineReco=cuisineReco,
         ingReco=ingReco,
@@ -157,14 +144,19 @@ def details():
 def profile():
     userdata = User.query.all()
     data = RecipeData.query.all()
+    user_list = []
     label_list = []
     image_list = []
     url_list = []
+    rating_list = []
+    comment_list = []
 
     for i in data:
         label_list.append(i.label)
         image_list.append(i.image)
         url_list.append(i.url)
+        rating_list.append(i.rating)
+        comment_list.append(i.comment)
 
     num_label = len(label_list)
 
@@ -175,13 +167,14 @@ def profile():
         label=label_list,
         image=image_list,
         url=url_list,
+        rating=rating_list,
+        comment=comment_list,
         num_label=num_label,
     )
 
 
 @app.route("/favorite", methods=["POST"])
 def favorite():
-    username = current_user.username
     recipeDetail = flask.request.form.get("recipeDetail")
     recipeImage = flask.request.form.get("recipeImage")
     recipeURL = flask.request.form.get("recipeURL")
@@ -194,6 +187,26 @@ def favorite():
     db.session.add(new_saved)
     db.session.commit()
     return flask.redirect("index")
+
+
+@app.route("/rating", methods=["POST"])
+def rating():
+    if flask.request.method == "POST":
+        rating = flask.request.form.get("rate", type=int)
+        comment = flask.request.form.get("comment")
+        rate_saved = RecipeData(
+            rating=rating,
+            comment=comment,
+        )
+        db.session.add(rate_saved)
+        db.session.commit()
+
+    return flask.redirect("/index")
+
+
+@app.route("/delete", methods=["POST", "GET"])
+def delete():
+    pass
 
 
 if __name__ == "__main__":

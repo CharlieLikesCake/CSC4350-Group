@@ -1,0 +1,77 @@
+<html>
+
+<head></head>
+
+<body>
+    <a href="{{ url_for('logout') }}">Log out</a>
+    Currently logged in as {{username}}
+    <a href="{{ url_for('profile') }}">Saved Recipes</a>
+
+    <div>
+        <form method="POST" action="/search">
+            <input type="text" name="keyword" placeholder="Search for Recipes">
+            <input type="submit" value="Search">
+        </form>
+    </div>
+
+    <div>
+        <h1>Looking for something new? Try these {{q}} dishes!</h1>
+    </div>
+
+    {% for i in range(len_recipes) %}
+    <div>
+
+        <form id="form__submit" action="{{ url_for('details') }}" method="POST">
+            <a href="#" onclick="submitForm()">{{recipes[i].label}}</a>
+            <div id="id">
+                <input name="id" value="{{ recipes[i].id }}" readonly />
+            </div>
+        </form>
+
+        <div>
+            Source: <a href="{{ recipes[i].url }}" target="_blank">{{ recipes[i].source }}</a>
+        </div>
+
+        <div>
+            <a><img src="{{ recipes[i].image }}" /></a>
+        </div>
+
+        <br>
+        <div>
+            <form method='POST' action="rating">
+                Ratings: <input type="number" name="rate" min="1" max="5" /><br>
+                Comment: <input type="text" name="comment" /> <br>
+                <br>
+                <input type=submit value=rate />
+            </form>
+        </div>
+
+        <div>
+            <form method='POST' action="favorite">
+                <h3> Saved Recipe / Details </h3>
+                recipe detail: <input type="text" name="recipeLabel" value="{{recipes[i].label}}" readonly /><br>
+                recipe image: <input type="text" name="recipeImage" value="{{recipes[i].image}}" readonly /><br>
+                recipe url: <input type="text" name="recipeURL" value="{{recipes[i].url}}" readonly /><br>
+                <input type=submit value="save" />
+            </form>
+        </div>
+
+    </div>
+    {% endfor %}
+
+    <script>
+        const div = document.querySelectorAll("#id");
+
+        for (let i = 0; i < div.length; i++) {
+            div[i].style.visibility = 'hidden';
+        }
+
+        function submitForm() {
+            let form = document.getElementById("form__submit");
+            form.submit();
+        }
+    </script>
+
+</body>
+
+</html>
