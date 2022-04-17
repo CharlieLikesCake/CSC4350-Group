@@ -1,0 +1,52 @@
+<html>
+
+<head></head>
+
+<body>
+    <a href="{{ url_for('logout') }}">Log out</a>
+    <a href="{{ url_for('index') }}">Main Page</a>
+    <div>
+        <h1>Your Saved Recipes</h1>
+        {% for i in range(len_recipes) %}
+
+        <div>
+            <form id="form__submit" action="{{ url_for('details') }}" method="POST">
+                <a href="#" onclick="submitForm()">{{recipes[i].label}}</a>
+                <div id="id">
+                    <input name="id" value="{{ recipes[i].recipe_id }}" readonly />
+                </div>
+            </form>
+        </div>
+
+        <div>
+            Source: <a href="{{recipes[i].url}}" target="_blank"> {{recipes[i].label}} </a>
+        </div>
+
+        <div>
+            <a><img src="{{ recipes[i].image }}" /></a>
+        </div>
+
+        {% endfor%}
+    </div>
+
+    <form method="POST">
+        <div>
+            <input type="submit" value="delete" name="delete" />
+        </div>
+    </form>
+
+    <script>
+        const div = document.querySelectorAll("#id");
+
+        for (let i = 0; i < div.length; i++) {
+            div[i].style.visibility = 'hidden';
+        }
+
+        function submitForm() {
+            let form = document.getElementById("form__submit");
+            form.submit();
+        }
+    </script>
+</body>
+
+</html>

@@ -155,44 +155,31 @@ def details():
 @app.route("/profile", methods=["POST", "GET"])
 @login_required
 def profile():
-    userdata = User.query.all()
-    data = RecipeData.query.all()
-    label_list = []
-    image_list = []
-    url_list = []
-
-    for i in data:
-        label_list.append(i.label)
-        image_list.append(i.image)
-        url_list.append(i.url)
-
-    num_label = len(label_list)
+    username = current_user.username
+    recipes = RecipeData.query.filter_by(username=username).all()
 
     return flask.render_template(
         # display database information here
-        "favorite.html",
-        username=current_user.username,
-        label=label_list,
-        image=image_list,
-        url=url_list,
-        num_label=num_label,
+        "profile.html",
+        recipes=recipes,
+        len_recipes=len(recipes),
     )
 
 
 @app.route("/favorite", methods=["POST"])
 def favorite():
     username = current_user.username
-    recipeDetail = flask.request.form.get("recipeDetail")
-    recipeImage = flask.request.form.get("recipeImage")
-    recipeURL = flask.request.form.get("recipeURL")
+    label = flask.request.form.get("label")
+    image = flask.request.form.get("image")
+    url = flask.request.form.get("url")
+    id = flask.request.form.get("id")
     new_saved = RecipeData(
-        label=recipeDetail,
-        image=recipeImage,
-        url=recipeURL,
+        label=label, image=image, url=url, username=username, recipe_id=id
     )
 
     db.session.add(new_saved)
     db.session.commit()
+    flask.flash("Successfully saved " + label + " to your saved recipes.")
     return flask.redirect("index")
 
 
