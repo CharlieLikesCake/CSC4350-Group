@@ -105,6 +105,8 @@ def recommendations():
         len_recipes=len(recipes),
         category=data["category"],
         keyword=data["keyword"],
+        original_label=data["original_label"],
+        original_id=data["original_id"],
     )
 
 
@@ -141,6 +143,7 @@ def details():
     return flask.render_template(
         "details.html",
         recipeDetails=recipeDetails,
+        original_id=id,
         mealReco=mealReco,
         cuisineReco=cuisineReco,
         ingReco=ingReco,
