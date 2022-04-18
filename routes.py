@@ -215,6 +215,7 @@ def rating():
         rate_saved = RecipeData(
             rating=rating,
             comment=comment,
+            userid = current_user.id
         )
         db.session.add(rate_saved)
         db.session.commit()
@@ -226,6 +227,23 @@ def rating():
 def delete():
     pass
 
+@app.route("/comments")
+def comments():
+    reviewInfo = RecipeData.query.filter_by(userid = current_user.id).all()
+    reviewlen = len(reviewInfo)
+    reviewlist = []
+    for i in range(reviewlen):
+        reviewlist.append({"id": reviewInfo[i].id,
+        "label": reviewInfo[i].label,
+        "rating": reviewInfo[i].ratings,
+        "comment": reviewInfo[i].comments
+        })
+    return flask.render_template(
+        "comments.html",
+        review = reviewlist,
+        name = current_user.userid,
+        length = reviewlen
+    )
 
 if __name__ == "__main__":
     app.run(
