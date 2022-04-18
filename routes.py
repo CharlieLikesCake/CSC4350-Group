@@ -140,6 +140,15 @@ def details():
     ingcatReco = ingcatReco[0]["foodCategory"]
     healthReco = recipeDetails["healthLabels"]
 
+    # for comments:
+    data = RecipeData.query.all()
+    rating_list = []
+    comment_list = []
+
+    for i in data:
+        rating_list.append(i.rating)
+        comment_list.append(i.comment)
+
     return flask.render_template(
         "details.html",
         recipeDetails=recipeDetails,
@@ -149,6 +158,8 @@ def details():
         ingReco=ingReco,
         ingcatReco=ingcatReco,
         healthReco=healthReco,
+        rating=rating_list,
+        comment=comment_list,
     )
 
 
@@ -194,6 +205,26 @@ def favorite():
     db.session.add(new_saved)
     db.session.commit()
     return flask.redirect("index")
+
+
+@app.route("/rating", methods=["POST"])
+def rating():
+    if flask.request.method == "POST":
+        rating = flask.request.form.get("rate", type=int)
+        comment = flask.request.form.get("comment")
+        rate_saved = RecipeData(
+            rating=rating,
+            comment=comment,
+        )
+        db.session.add(rate_saved)
+        db.session.commit()
+
+    return flask.redirect("/index")
+
+
+@app.route("/delete", methods=["POST", "GET"])
+def delete():
+    pass
 
 
 if __name__ == "__main__":
