@@ -5,7 +5,11 @@
 <body>
     <div>
         {% for i in range(length) %}
-            <p>{{ review[i] }}</p>
+            {{ review[i] }} 
+                <form method='POST' action="delete">
+                <input type="text" name="recipeid" value="{{review[i].id}}" readonly /><br>
+                <input type=submit value="Delete Comment" />
+            </form>
         {% endfor %}
     </div>
 </body>
