@@ -225,7 +225,12 @@ def rating():
 
 @app.route("/delete", methods=["POST", "GET"])
 def delete():
-    pass
+    data = flask.request.form.get("recipeid")
+    commdata = RecipeData.query.filter_by(id = data).first()
+    db.session.delete(commdata)
+    db.session.commit()
+
+    return flask.redirect("index")
 
 @app.route("/comments")
 def comments():
@@ -235,13 +240,13 @@ def comments():
     for i in range(reviewlen):
         reviewlist.append({"id": reviewInfo[i].id,
         "label": reviewInfo[i].label,
-        "rating": reviewInfo[i].ratings,
-        "comment": reviewInfo[i].comments
+        "rating": reviewInfo[i].rating,
+        "comment": reviewInfo[i].comment
         })
     return flask.render_template(
         "comments.html",
         review = reviewlist,
-        name = current_user.userid,
+        name = current_user.username,
         length = reviewlen
     )
 
