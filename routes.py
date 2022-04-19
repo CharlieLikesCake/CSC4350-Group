@@ -88,7 +88,7 @@ def logout():
 def search_recipe():
     if flask.request.method == "POST":
         data = flask.request.form.get("keyword")
-    recipes = recipe.getRandomRecipeList(data)
+    recipes = recipe.getRecipeList(data)
     return flask.render_template(
         "search.html", recipes=recipes, len_recipes=len(recipes)
     )

@@ -23,7 +23,7 @@
     <div>
 
         <form id="form__submit" action="{{ url_for('details') }}" method="POST">
-            <a href="#" onclick="submitForm()">{{recipes[i].label}}</a>
+            <input type="submit" value="{{recipes[i].label}}" />
             <div id="id">
                 <input name="id" value="{{ recipes[i].id }}" readonly />
             </div>
