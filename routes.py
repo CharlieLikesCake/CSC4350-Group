@@ -212,6 +212,7 @@ def rating():
     if flask.request.method == "POST":
         rating = flask.request.form.get("rate", type=int)
         comment = flask.request.form.get("comment")
+        
         rate_saved = RecipeData(
             rating=rating,
             comment=comment,
@@ -233,15 +234,14 @@ def comments():
     reviewlen = len(reviewInfo)
     reviewlist = []
     for i in range(reviewlen):
-        reviewlist.append({"id": reviewInfo[i].id,
-        "label": reviewInfo[i].label,
-        "rating": reviewInfo[i].ratings,
-        "comment": reviewInfo[i].comments
+        reviewlist.append({
+        reviewInfo[i].rating,
+        reviewInfo[i].comment
         })
     return flask.render_template(
         "comments.html",
         review = reviewlist,
-        name = current_user.userid,
+        name = current_user.id,
         length = reviewlen
     )
 
