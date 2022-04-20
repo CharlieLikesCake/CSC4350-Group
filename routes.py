@@ -166,33 +166,31 @@ def details():
 @app.route("/profile", methods=["POST", "GET"])
 @login_required
 def profile():
-    userdata = User.query.all()
-    data = RecipeData.query.all()
-    label_list = []
-    image_list = []
-    url_list = []
+    savedInfo = RecipeData.query.filter_by(userid=current_user.id).all()
+    savedLen = len(savedInfo)
+    savedList = []
 
-    for i in data:
-        label_list.append(i.label)
-        image_list.append(i.image)
-        url_list.append(i.url)
-
-    num_label = len(label_list)
+    for i in range(savedLen):
+        savedList.append(
+            {
+                "id": savedInfo[i].id,
+                "label": savedInfo[i].label,
+                "image": savedInfo[i].image,
+                "url": savedInfo[i].url,
+            }
+        )
 
     return flask.render_template(
-        # display database information here
         "favorite.html",
+        savedList=savedList,
+        name=current_user.id,
+        length=savedLen,
         username=current_user.username,
-        label=label_list,
-        image=image_list,
-        url=url_list,
-        num_label=num_label,
     )
 
 
 @app.route("/favorite", methods=["POST"])
 def favorite():
-    username = current_user.username
     recipeDetail = flask.request.form.get("recipeDetail")
     recipeImage = flask.request.form.get("recipeImage")
     recipeURL = flask.request.form.get("recipeURL")
@@ -212,12 +210,8 @@ def rating():
     if flask.request.method == "POST":
         rating = flask.request.form.get("rate", type=int)
         comment = flask.request.form.get("comment")
-        
-        rate_saved = RecipeData(
-            rating=rating,
-            comment=comment,
-            userid = current_user.id
-        )
+
+        rate_saved = RecipeData(rating=rating, comment=comment, userid=current_user.id)
         db.session.add(rate_saved)
         db.session.commit()
 
@@ -227,29 +221,36 @@ def rating():
 @app.route("/delete", methods=["POST", "GET"])
 def delete():
     data = flask.request.form.get("recipeid")
-    commdata = RecipeData.query.filter_by(id = data).first()
+    commdata = RecipeData.query.filter_by(id=data).first()
     db.session.delete(commdata)
     db.session.commit()
 
     return flask.redirect("index")
 
+
 @app.route("/comments")
 def comments():
-    reviewInfo = RecipeData.query.filter_by(userid = current_user.id).all()
+    reviewInfo = RecipeData.query.filter_by(userid=current_user.id).all()
     reviewlen = len(reviewInfo)
     reviewlist = []
+
     for i in range(reviewlen):
-        reviewlist.append({"id": reviewInfo[i].id,
-        "label": reviewInfo[i].label,
-        "rating": reviewInfo[i].rating,
-        "comment": reviewInfo[i].comment
-        })
+        reviewlist.append(
+            {
+                "id": reviewInfo[i].id,
+                "label": reviewInfo[i].label,
+                "rating": reviewInfo[i].rating,
+                "comment": reviewInfo[i].comment,
+            }
+        )
+
     return flask.render_template(
         "comments.html",
-        review = reviewlist,
-        name = current_user.id,
-        length = reviewlen
+        review=reviewlist,
+        name=current_user.id,
+        length=reviewlen,
     )
+
 
 if __name__ == "__main__":
     app.run(

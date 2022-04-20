@@ -1,0 +1,27 @@
+<html>
+
+<head></head>
+
+<body>
+    <a href="{{ url_for('logout') }}">Log out</a>
+    Save Recipe Page. <br>
+    Username: <b>{{username}}</b> <br>
+    <a href="{{ url_for('index') }}">Main Page</a>
+    <div>
+        <h1>Saved Dishes</h1>
+        {% for i in range(length) %}
+        {{savedList[i]}}
+        <a><img src="{{savedList[i].image}}" /></a><br>
+        Source: <a href="{{savedList[i].url}}" target="_blank"> {{savedList[i].label}} </a> <br>
+        <form method="POST" action="/delete">
+            <input type="text" name="recipeid" value="{{savedList[i].id}}" readonly /><br>
+            <input type="submit" value="delete" name="delete" />
+        </form>
+        {% endfor%}
+    </div>
+
+
+    </div>
+</body>
+
+</html>
