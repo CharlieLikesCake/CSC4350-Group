@@ -212,9 +212,11 @@ def rating():
     if flask.request.method == "POST":
         rating = flask.request.form.get("rate", type=int)
         comment = flask.request.form.get("comment")
+        
         rate_saved = RecipeData(
             rating=rating,
             comment=comment,
+            userid = current_user.id
         )
         db.session.add(rate_saved)
         db.session.commit()
@@ -224,8 +226,30 @@ def rating():
 
 @app.route("/delete", methods=["POST", "GET"])
 def delete():
-    pass
+    data = flask.request.form.get("recipeid")
+    commdata = RecipeData.query.filter_by(id = data).first()
+    db.session.delete(commdata)
+    db.session.commit()
 
+    return flask.redirect("index")
+
+@app.route("/comments")
+def comments():
+    reviewInfo = RecipeData.query.filter_by(userid = current_user.id).all()
+    reviewlen = len(reviewInfo)
+    reviewlist = []
+    for i in range(reviewlen):
+        reviewlist.append({"id": reviewInfo[i].id,
+        "label": reviewInfo[i].label,
+        "rating": reviewInfo[i].rating,
+        "comment": reviewInfo[i].comment
+        })
+    return flask.render_template(
+        "comments.html",
+        review = reviewlist,
+        name = current_user.id,
+        length = reviewlen
+    )
 
 if __name__ == "__main__":
     app.run(

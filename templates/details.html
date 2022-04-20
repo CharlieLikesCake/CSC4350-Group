@@ -1,56 +1,104 @@
 <html>
 
-<head></head>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/details.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</head>
 
 <body>
-    <div>
-        <form method="POST, GET" action="/search">
-            <input type="text" name="keyword" placeholder="Search for Recipes">
-            <input type="submit" value="Search">
-        </form>
-    </div>
-    <div>
-        <div>
-            <h1>{{recipeDetails.label}}</h1>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+
+        <div class="col-lg-auto">
+
+            <a class="navbar-brand" href="{{url_for('index')}}">MyRecipeList</a>
         </div>
-
         <div>
-            Source: <a href="{{ recipeDetails.url }}" target="_blank">{{ recipeDetails.source }}</a>
+
+            <form method="POST" class="form-inline my-2 my-lg-0" action="/search">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search for Recipes" aria-label="Search"
+                    name="keyword">
+                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+            </form>
         </div>
+        <div class="col-lg-auto">
 
-        <div>
-            <a><img src="{{ recipeDetails.image }}" /></a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+    <div class="container">
+        <div class="shadow p-3 mb-5 bg-white rounded">
+
+            <div class="title-card border-bottom clearfix d-flex flex-row bd-highlight mb-3">
+                <div class="p-2 bd-highlight">
+                    <a><img src="{{ recipeDetails.image }}" class="rounded float-left" /></a>
+                </div>
+                <div class="text-center p-2 bd-highlight">
+                    <div>
+                        <h1 class="display-4">{{recipeDetails.label}}</h1>
+                    </div>
+
+                    <div>
+                        See full recipe on: <a href="{{ recipeDetails.url }}" target="_blank">{{ recipeDetails.source
+                            }}</a>
+                    </div>
+
+                    <form class="align-bottom">
+                        <div id="id">
+                            <input name="label" value="{{recipeDetails.label}}" readonly />
+                            <input name="image" value="{{recipeDetails.image}}" readonly />
+                            <input name="url" value="{{recipeDetails.url}}" readonly />
+                        </div>
+                        <button class="btn btn-outline-success">Save Recipe</button>
+                    </form>
+                </div>
+
+            </div>
+            <br />
+            <br />
+
+
+            <form action="{{ url_for('recommendations') }}" method="POST" onsubmit="submitForm();">
+                <label for="categories">Browse Similar Recipes based on:</label>
+                <select id="categories">
+                    <option value="{{mealReco}}">Meal</option>
+                    <option value="{{cuisineReco}}">Cuisine</option>
+                    <option value="{{ingReco}}">Ingredient</option>
+                    <option value="{{ingcatReco}}">Ingredient Category</option>
+                    <option value="{{healthReco}}">Health</option>
+                </select>
+                <input type="hidden" name="keyword" id="keyword" value="">
+                <input type="hidden" name="category" id="category" value="">
+                <input type="hidden" name="original_label" value="{{recipeDetails.label}}">
+                <input type="hidden" name="original_id" value="{{original_id}}">
+                <input type="submit" value="Search">
+            </form>
+
+            <div>
+                <form method='POST' action="rating">
+                    Ratings: <input type="number" name="rate" min="1" max="5" /><br>
+                    Comment: <input type="text" name="comment" /> <br>
+                    <br>
+                    <input type=submit value=rate />
+                </form>
+            </div>
         </div>
     </div>
-    <br />
-    <br />
-
-
-    <form action="{{ url_for('recommendations') }}" method="POST" onsubmit="submitForm();">
-        <label for="categories">Browse Similar Recipes based on:</label>
-        <select id="categories">
-            <option value="{{mealReco}}">Meal</option>
-            <option value="{{cuisineReco}}">Cuisine</option>
-            <option value="{{ingReco}}">Ingredient</option>
-            <option value="{{ingcatReco}}">Ingredient Category</option>
-            <option value="{{healthReco}}">Health</option>
-        </select>
-        <input type="hidden" name="keyword" id="keyword" value="">
-        <input type="hidden" name="category" id="category" value="">
-        <input type="hidden" name="original_label" value="{{recipeDetails.label}}">
-        <input type="hidden" name="original_id" value="{{original_id}}">
-        <input type="submit" value="Search">
-    </form>
-
-    <div>
-        <form method='POST' action="rating">
-            Ratings: <input type="number" name="rate" min="1" max="5" /><br>
-            Comment: <input type="text" name="comment" /> <br>
-            <br>
-            <input type=submit value=rate />
-        </form>
-    </div>
-
 
     <script>
         const div = document.querySelectorAll("#id");
@@ -86,7 +134,6 @@
             return true;
         }
     </script>
-
 </body>
 
 </html>
