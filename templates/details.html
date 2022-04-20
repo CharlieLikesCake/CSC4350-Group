@@ -44,7 +44,7 @@
     <div class="container">
         <div class="shadow p-3 mb-5 bg-white rounded">
 
-            <div class="title-card border-bottom clearfix d-flex flex-row bd-highlight mb-3">
+            <div class="space-between title-card border-bottom clearfix d-flex flex-row bd-highlight mb-3">
                 <div class="p-2 bd-highlight">
                     <a><img src="{{ recipeDetails.image }}" class="rounded float-left" /></a>
                 </div>
@@ -69,8 +69,17 @@
                 </div>
 
             </div>
-            <br />
-            <br />
+
+            <div>
+                <div>
+                    {{len_ing}} Ingredients
+                </div>
+                <div>
+                    {% for i in range(len_ing) %}
+                    <div>{{recipeDetails.ingredientLines[i]}}</div>
+                    {% endfor %}
+                </div>
+            </div>
 
 
             <form action="{{ url_for('recommendations') }}" method="POST" onsubmit="submitForm();">
