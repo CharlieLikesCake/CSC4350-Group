@@ -131,6 +131,10 @@ def index():
 @login_required
 def details():
     id = flask.request.form.get("id")
+    label = flask.request.form.get("label")
+    image = flask.request.form.get("image")
+    url = flask.request.form.get("url")
+
     recipeDetails = recipe.getRecipeDetails(id)
     mealReco = recipeDetails["mealType"]
     cuisineReco = recipeDetails["cuisineType"]
@@ -160,46 +164,40 @@ def details():
         healthReco=healthReco,
         rating=rating_list,
         comment=comment_list,
+        len_ing=len(recipeDetails["ingredientLines"]),
+        label=label,
+        image=image,
+        url=url,
     )
 
 
 @app.route("/profile", methods=["POST", "GET"])
 @login_required
 def profile():
-    userdata = User.query.all()
-    data = RecipeData.query.all()
-    label_list = []
-    image_list = []
-    url_list = []
-
-    for i in data:
-        label_list.append(i.label)
-        image_list.append(i.image)
-        url_list.append(i.url)
-
-    num_label = len(label_list)
+    userid = current_user.id
+    recipes = RecipeData.query.filter_by(userid=userid).all()
 
     return flask.render_template(
         # display database information here
         "favorite.html",
-        username=current_user.username,
-        label=label_list,
-        image=image_list,
-        url=url_list,
-        num_label=num_label,
+        recipes=recipes,
+        len_recipes=len(recipes),
     )
 
 
 @app.route("/favorite", methods=["POST"])
+@login_required
 def favorite():
-    username = current_user.username
-    recipeDetail = flask.request.form.get("recipeDetail")
+    recipeLabel = flask.request.form.get("recipeLabel")
     recipeImage = flask.request.form.get("recipeImage")
     recipeURL = flask.request.form.get("recipeURL")
+    recipeID = flask.request.form.get("recipeID")
     new_saved = RecipeData(
-        label=recipeDetail,
+        label=recipeLabel,
         image=recipeImage,
         url=recipeURL,
+        userid=current_user.id,
+        recipeid=recipeID,
     )
 
     db.session.add(new_saved)
@@ -207,59 +205,74 @@ def favorite():
     return flask.redirect("index")
 
 
+
 @app.route("/rating", methods=["POST"])
 def rating():
     if flask.request.method == "POST":
         rating = flask.request.form.get("rate", type=int)
         comment = flask.request.form.get("comment")
-        
+        image = flask.request.form.get("image")
+        label = flask.request.form.get("label")
+        url = flask.request.form.get("url")
+
         rate_saved = RecipeData(
-            rating=rating,
+            rating=rating, 
             comment=comment,
-            userid = current_user.id
-        )
+            image = image,
+            label = label,
+            url = url,
+            userid=current_user.id)
         db.session.add(rate_saved)
         db.session.commit()
 
     return flask.redirect("/index")
 
 
-@app.route("/delete", methods=["POST", "GET"])
+@app.route("/deletecomment", methods=["POST", "GET"])
 def delete():
-    data = flask.request.form.get("recipeid")
-    commdata = RecipeData.query.filter_by(id = data).first()
+    data = flask.request.form.get("reviewid")
+    commdata = RecipeData.query.filter_by(id=data).first()
     db.session.delete(commdata)
     db.session.commit()
 
     return flask.redirect("index")
 
+
 @app.route("/comments")
+@login_required
 def comments():
-    reviewInfo = RecipeData.query.filter_by(userid = current_user.id).all()
+    reviewInfo = RecipeData.query.filter_by(userid=current_user.id).all()
     reviewlen = len(reviewInfo)
     reviewlist = []
     for i in range(reviewlen):
-<<<<<<< HEAD
-        reviewlist.append({"id": reviewInfo[i].id,
-        "label": reviewInfo[i].label,
-        "rating": reviewInfo[i].rating,
-        "comment": reviewInfo[i].comment
-=======
-        reviewlist.append({
-        reviewInfo[i].rating,
-        reviewInfo[i].comment
->>>>>>> 4a7a54d237fcaf74b46195ff7361dd84e6847099
-        })
+        reviewlist.append(
+            {
+                "id": reviewInfo[i].id,
+                "label": reviewInfo[i].label,
+                "rating": reviewInfo[i].rating,
+                "comment": reviewInfo[i].comment,
+                "url": reviewInfo[i].url,
+                "image": reviewInfo[i].image
+            }
+        )
     return flask.render_template(
-        "comments.html",
-        review = reviewlist,
-<<<<<<< HEAD
-        name = current_user.username,
-=======
-        name = current_user.id,
->>>>>>> 4a7a54d237fcaf74b46195ff7361dd84e6847099
-        length = reviewlen
+        "comments.html", 
+        review=reviewlist, 
+        name=current_user.id, 
+        length=reviewlen
     )
+
+@app.route("/editcomment", methods=["POST"])
+def editcomments():
+    reviewid = flask.request.form.get("reviewid")
+    editcomm = flask.request.form.get("comminput")
+    editrate = flask.request.form.get("rateinput")
+    commdata = RecipeData.query.filter_by(id=reviewid).first()
+    commdata.comment = editcomm
+    commdata.rating = editrate
+    db.session.commit()
+    return flask.redirect("index")
+
 
 if __name__ == "__main__":
     app.run(

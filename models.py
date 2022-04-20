@@ -16,6 +16,7 @@ class RecipeData(db.Model):
     rating = db.Column(db.Integer)
     comment = db.Column(db.String(1000))
     userid = db.Column(db.Integer)
+    recipeid = db.Column(db.String(1000))
 
 
 db.create_all()

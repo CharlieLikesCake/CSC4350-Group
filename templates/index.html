@@ -1,6 +1,9 @@
 <html>
 
-<head></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="./static/homestyles.css">
+
+</head>
 
 <body>
     <a href="{{ url_for('logout') }}">Log out</a>
@@ -8,59 +11,72 @@
     <a href="{{ url_for('profile') }}">Saved Recipes</a>
     <a href="{{ url_for('comments') }}">Comments</a>
 
-    <div>
+    <div class="titlestyle">
+        <h1>Looking for something new? Try these {{q}} dishes!</h1>
+    </div>
+    <div class="searchbar">
         <form method="POST" action="/search">
-            <input type="text" name="keyword" placeholder="Search for Recipes">
+            <input type="text" name="keyword" placeholder="Search for Recipes" class="searchbarsize">
             <input type="submit" value="Search">
         </form>
     </div>
 
-    <div>
-        <h1>Looking for something new? Try these {{q}} dishes!</h1>
-    </div>
-
     {% for i in range(len_recipes) %}
-    <div>
+    <div class="card" style="width: 18rem;">
+        <img src="{{ recipes[i].image }}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{recipes[i].label}}</h5>
+            <p class="card-text">Source: <a href="{{ recipes[i].url }}" target="_blank">{{recipes[i].source}}</a>
+            </p>
+            <div>
+                <form style="float: left;" id="form__submit" action="{{ url_for('details') }}" method="POST">
+                    <input type="submit" value="View Details" class="btn btn-primary" />
+                    <div id="id">
+                        <input name="id" value="{{ recipes[i].id }}" readonly />
+                    </div>
+                </form>
+                <form method='POST' action="favorite">
+                    <div id="id">
+                        <input type="text" name="recipeLabel" value="{{recipes[i].label}}" readonly /><br>
+                        <input type="text" name="recipeImage" value="{{recipes[i].image}}" readonly /><br>
+                        <input type="text" name="recipeURL" value="{{recipes[i].url}}" readonly /><br>
+                        <input type="text" name="recipeID" value="{{recipes[i].id}}" readonly />
+                    </div>
+                    <input type="submit" value="Save" />
+                </form>
+
 
         <form id="form__submit" action="{{ url_for('details') }}" method="POST">
             <input type="submit" value="{{recipes[i].label}}" />
             <div id="id">
+                <input name="label" value="{{recipes[i].label}}" />
                 <input name="id" value="{{ recipes[i].id }}" readonly />
+                <input name="image" value="{{ recipes[i].image }}" readonly />
+                <input name="url" value="{{ recipes[i].url }}" readonly />
+
             </div>
         </form>
-
-        <div>
-            Source: <a href="{{ recipes[i].url }}" target="_blank">{{ recipes[i].source }}</a>
         </div>
-
-        <div>
-            <a><img src="{{ recipes[i].image }}" /></a>
-        </div>
-
-        <div>
-            <form method='POST' action="favorite">
-                <h3> Save Recipe / Details </h3>
-                recipe detail: <input type="text" name="recipeLabel" value="{{recipes[i].label}}" readonly /><br>
-                recipe image: <input type="text" name="recipeImage" value="{{recipes[i].image}}" readonly /><br>
-                recipe url: <input type="text" name="recipeURL" value="{{recipes[i].url}}" readonly /><br>
-                <input type=submit value="save" />
-            </form>
-        </div>
-
     </div>
+
+
+
     {% endfor %}
+
 
     <script>
         const div = document.querySelectorAll("#id");
 
         for (let i = 0; i < div.length; i++) {
-            div[i].style.visibility = 'hidden';
+            div[i].style.display = 'none';
         }
 
         function submitForm() {
             let form = document.getElementById("form__submit");
             form.submit();
         }
+
+
     </script>
 
 </body>

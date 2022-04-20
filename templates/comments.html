@@ -5,15 +5,47 @@
 <body>
     <div>
         {% for i in range(length) %}
-<<<<<<< HEAD
-            {{ review[i] }} 
-                <form method='POST' action="delete">
-                <input type="text" name="recipeid" value="{{review[i].id}}" readonly /><br>
-                <input type=submit value="Delete Comment" />
+            Dish: {{ review[i].label }} 
+            <br>
+            <img src="{{ review[i].image }}" />
+            <br>
+            Source: {{ review[i].url }}
+            <br>
+            Rating: {{ review[i].rating }} 
+            <br>
+            Comment: {{ review[i].comment }} 
+            <br>
+            <p>Edit your comment:</p>
+            <form method='POST' action="editcomment">
+                <div id = "id">
+                    <input type="text" name="reviewid" value="{{review[i].id}}" readonly /><br>
+                </div>
+                Rating: <input type="number" name="rateinput" min="1" max="5" />
+                <br>
+                Comment: <input type="text" name="comminput" />
+                <br>
+                <br>
+                <input type=submit value="Save Comment" />
             </form>
-=======
-            <p>{{ review[i] }}</p>
->>>>>>> 4a7a54d237fcaf74b46195ff7361dd84e6847099
+                <form method='POST' action="deletecomment">
+                    <div id = "id">
+                        <input type="text" name="reviewid" value="{{review[i].id}}" readonly /><br>
+                    </div>
+                    <input type=submit value="Delete Comment" />
+                </form>
         {% endfor %}
     </div>
+
+    <script>
+        const div = document.querySelectorAll("#id");
+
+        for (let i = 0; i < div.length; i++) {
+            div[i].style.display = 'none';
+        }
+
+        function submitForm() {
+            let form = document.getElementById("form__submit");
+            form.submit();
+        }
+    </script>
 </body>
