@@ -25,7 +25,10 @@
         <form id="form__submit" action="{{ url_for('details') }}" method="POST">
             <input type="submit" value="{{recipes[i].label}}" />
             <div id="id">
+                <input name="label" value="{{recipes[i].label}}" />
                 <input name="id" value="{{ recipes[i].id }}" readonly />
+                <input name="image" value="{{ recipes[i].image }}" readonly />
+                <input name="url" value="{{ recipes[i].url }}" readonly />
             </div>
         </form>
 
