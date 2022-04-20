@@ -1,3 +1,7 @@
 .title-card {
     padding-bottom: 20px;
 }
+
+.space-between {
+    justify-content: space-between;
+}
