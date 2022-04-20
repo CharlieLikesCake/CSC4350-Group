@@ -16,12 +16,18 @@
         <h1>
             Recipes based on similar {{category}}: {{keyword}}
         </h1>
+        <form id="form__submit" action="{{ url_for('details') }}" method="POST">
+            <a href="#" onclick="submitForm()">Return to {{ original_label }}</a>
+            <div id="id">
+                <input name="id" value="{{ original_id }}" readonly />
+            </div>
+        </form>
     </div>
 
     {% for i in range(len_recipes) %}
     <div>
         <form id="form__submit" action="{{ url_for('details') }}" method="POST">
-            <a href="#" onclick="submitForm()">{{recipes[i].label}}</a>
+            <input type="submit" value="{{recipes[i].label}}" />
             <div id="id">
                 <input name="id" value="{{ recipes[i].id }}" readonly />
             </div>

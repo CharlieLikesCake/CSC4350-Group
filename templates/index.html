@@ -6,6 +6,7 @@
     <a href="{{ url_for('logout') }}">Log out</a>
     Currently logged in as {{username}}
     <a href="{{ url_for('profile') }}">Saved Recipes</a>
+    <a href="{{ url_for('comments') }}">Comments</a>
 
     <div>
         <form method="POST" action="/search">
@@ -22,7 +23,7 @@
     <div>
 
         <form id="form__submit" action="{{ url_for('details') }}" method="POST">
-            <a href="#" onclick="submitForm()">{{recipes[i].label}}</a>
+            <input type="submit" value="{{recipes[i].label}}" />
             <div id="id">
                 <input name="id" value="{{ recipes[i].id }}" readonly />
             </div>

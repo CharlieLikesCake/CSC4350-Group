@@ -4,7 +4,7 @@
 
 <body>
     <div>
-        <form method="POST" action="/search">
+        <form method="POST, GET" action="/search">
             <input type="text" name="keyword" placeholder="Search for Recipes">
             <input type="submit" value="Search">
         </form>
@@ -26,81 +26,32 @@
     <br />
     <br />
 
-    <h1>Browse Similar Recipes based on:</h1>
+
+    <form action="{{ url_for('recommendations') }}" method="POST" onsubmit="submitForm();">
+        <label for="categories">Browse Similar Recipes based on:</label>
+        <select id="categories">
+            <option value="{{mealReco}}">Meal</option>
+            <option value="{{cuisineReco}}">Cuisine</option>
+            <option value="{{ingReco}}">Ingredient</option>
+            <option value="{{ingcatReco}}">Ingredient Category</option>
+            <option value="{{healthReco}}">Health</option>
+        </select>
+        <input type="hidden" name="keyword" id="keyword" value="">
+        <input type="hidden" name="category" id="category" value="">
+        <input type="hidden" name="original_label" value="{{recipeDetails.label}}">
+        <input type="hidden" name="original_id" value="{{original_id}}">
+        <input type="submit" value="Search">
+    </form>
 
     <div>
-        <div>
-            <form id="form__submit" action="{{ url_for('recommendations') }}" method="POST">
-                <a href="#" onclick="submitForm()">Meal</a>
-                <div id="id">
-                    <input name="keyword" value="{{ mealReco }}" readonly />
-                    <input name="category" value="Meal" readonly />
-                </div>
-            </form>
-        </div>
-
+        <form method='POST' action="rating">
+            Ratings: <input type="number" name="rate" min="1" max="5" /><br>
+            Comment: <input type="text" name="comment" /> <br>
+            <br>
+            <input type=submit value=rate />
+        </form>
     </div>
-    <br />
 
-
-    <div>
-        <div>
-            <form id="form__submit" action="{{ url_for('recommendations') }}" method="POST">
-                <a href="#" onclick="submitForm()">Cuisine</a>
-                <div id="id">
-                    <input name="keyword" value="{{ cuisineReco }}" readonly />
-                    <input name="category" value="Cuisine" readonly />
-                </div>
-            </form>
-        </div>
-
-    </div>
-    <br />
-
-
-    <div>
-        <div>
-            <form id="form__submit" action="{{ url_for('recommendations') }}" method="POST">
-                <a href="#" onclick="submitForm()">Ingredient</a>
-                <div id="id">
-                    <input name="keyword" value="{{ ingReco }}" readonly />
-                    <input name="category" value="Ingredient" readonly />
-                </div>
-            </form>
-        </div>
-
-    </div>
-    <br />
-
-
-    <div>
-        <div>
-            <form id="form__submit" action="{{ url_for('recommendations') }}" method="POST">
-                <a href="#" onclick="submitForm()">Ingredient Category</a>
-                <div id="id">
-                    <input name="keyword" value="{{ ingcatReco }}" readonly />
-                    <input name="category" value="Ingredient Category" readonly />
-                </div>
-            </form>
-        </div>
-
-    </div>
-    <br />
-
-
-    <div>
-        <div>
-            <form id="form__submit" action="{{ url_for('recommendations') }}" method="POST">
-                <a href="#" onclick="submitForm()">Health</a>
-                <div id="id">
-                    <input name="keyword" value="{{ healthReco }}" readonly />
-                    <input name="category" value="Health" readonly />
-                </div>
-            </form>
-        </div>
-
-    </div>
-    <br />
 
     <script>
         const div = document.querySelectorAll("#id");
@@ -110,8 +61,30 @@
         }
 
         function submitForm() {
-            let form = document.getElementById("form__submit");
-            form.submit();
+            let categories = document.getElementById("categories").value;
+            switch (categories) {
+                case "{{mealReco|safe}}":
+                    document.getElementById("keyword").value = "{{ mealReco|safe }}";
+                    document.getElementById("category").value = "Meal";
+                    break;
+                case "{{cuisineReco|safe}}":
+                    document.getElementById("keyword").value = "{{ cuisineReco|safe }}";
+                    document.getElementById("category").value = "Cuisine";
+                    break;
+                case "{{ingReco|safe}}":
+                    document.getElementById("keyword").value = "{{ ingReco|safe }}";
+                    document.getElementById("category").value = "Ingredient";
+                    break;
+                case "{{ingcatReco|safe}}":
+                    document.getElementById("keyword").value = "{{ ingcatReco|safe }}";
+                    document.getElementById("category").value = "Ingredient";
+                    break;
+                case "{{healthReco|safe}}":
+                    document.getElementById("keyword").value = "{{ healthReco|safe }}";
+                    document.getElementById("category").value = "Health";
+                    break;
+            }
+            return true;
         }
     </script>
 
