@@ -140,6 +140,9 @@ def details():
     ingcatReco = ingcatReco[0]["foodCategory"]
     healthReco = recipeDetails["healthLabels"]
 
+    calories = int(recipeDetails["calories"])
+    dailyValue = int(recipeDetails["totalDaily"]["ENERC_KCAL"]["quantity"])
+
     # for comments:
     data = RecipeData.query.all()
     rating_list = []
@@ -161,6 +164,8 @@ def details():
         rating=rating_list,
         comment=comment_list,
         len_ing=len(recipeDetails["ingredientLines"]),
+        calories=calories,
+        dailyValue=dailyValue,
     )
 
 

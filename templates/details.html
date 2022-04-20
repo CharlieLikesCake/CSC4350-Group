@@ -58,11 +58,12 @@
                             }}</a>
                     </div>
 
-                    <form class="align-bottom">
+                    <form class="align-bottom" action="{{ url_for('favorite') }}" method="POST">
                         <div id="id">
-                            <input name="label" value="{{recipeDetails.label}}" readonly />
-                            <input name="image" value="{{recipeDetails.image}}" readonly />
-                            <input name="url" value="{{recipeDetails.url}}" readonly />
+                            <input name="recipeLabel" value="{{recipeDetails.label}}" readonly />
+                            <input name="recipeImage" value="{{recipeDetails.image}}" readonly />
+                            <input name="recipeURL" value="{{recipeDetails.url}}" readonly />
+                            <input name="recipeID" value="{{original_id}}" readonly />
                         </div>
                         <button class="btn btn-outline-success">Save Recipe</button>
                     </form>
@@ -70,14 +71,49 @@
 
             </div>
 
-            <div>
-                <div>
-                    {{len_ing}} Ingredients
-                </div>
-                <div>
-                    {% for i in range(len_ing) %}
-                    <div>{{recipeDetails.ingredientLines[i]}}</div>
-                    {% endfor %}
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="border-bottom">
+                            <h4>{{len_ing}} Ingredients</h4>
+                        </div>
+                        <div class="ingredient-box">
+                            {% for i in range(len_ing) %}
+                            <div class="ingredient">{{recipeDetails.ingredientLines[i]}}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="border-bottom">
+                            <h4>Nutrition</h4>
+                        </div>
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <span>
+                                        {{calories}}
+                                    </span>
+                                    <span>
+                                        CALORIES/SERVING
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <span>
+                                        {{dailyValue}}%
+                                    </span>
+                                    <span>
+                                        DAILY VALUE
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            Comments
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -142,6 +178,7 @@
             }
             return true;
         }
+
     </script>
 </body>
 
