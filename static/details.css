@@ -13,3 +13,16 @@
 .ingredient {
     padding: 10px;
 }
+
+.nutrition {
+    justify-content: center;
+}
+
+.nutrition-label {
+    font-size: 10px;
+    color: gray;
+}
+
+.nutrition-value {
+    font-size: 20px;
+}

@@ -141,10 +141,10 @@ def details():
     healthReco = recipeDetails["healthLabels"]
 
     calories = int(recipeDetails["calories"])
-    dailyValue = int(recipeDetails["totalNutrients"]["ENERC_KCAL"]["quantity"])
+    dailyValue = int(recipeDetails["totalDaily"]["ENERC_KCAL"]["quantity"])
 
     # for comments:
-    data = RecipeData.query.all()
+    data = RecipeData.query.filter_by(recipeid=id).all()
     rating_list = []
     comment_list = []
 
@@ -221,6 +221,7 @@ def rating():
         image = flask.request.form.get("image")
         label = flask.request.form.get("label")
         url = flask.request.form.get("url")
+        id = flask.request.form.get("id")
 
         rate_saved = RecipeData(
             rating=rating,
@@ -229,6 +230,7 @@ def rating():
             label=label,
             url=url,
             userid=current_user.id,
+            recipeid=id,
         )
         db.session.add(rate_saved)
         db.session.commit()

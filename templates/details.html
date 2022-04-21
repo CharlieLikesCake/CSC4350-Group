@@ -63,7 +63,7 @@
                             <input type="text" name="recipeLabel" value="{{recipeDetails.label}}" readonly />
                             <input type="text" name="recipeImage" value="{{recipeDetails.image}}" readonly />
                             <input type="text" name="recipeURL" value="{{recipeDetails.url}}" readonly />
-                            <input type="text" name="recipeID" value="{{id}}" readonly />
+                            <input type="text" name="recipeID" value="{{original_id}}" readonly />
                         </div>
                         <input type="submit" class="btn btn-outline-success" value="Save">
                     </form>
@@ -89,21 +89,21 @@
                             <h4>Nutrition</h4>
                         </div>
 
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <span>
+                        <div class="container border-bottom">
+                            <div class="row ingredient-box">
+                                <div class="col container">
+                                    <span class="row nutrition nutrition-value">
                                         {{calories}}
                                     </span>
-                                    <span>
+                                    <span class="row nutrition nutrition-label">
                                         CALORIES/SERVING
                                     </span>
                                 </div>
-                                <div class="col">
-                                    <span>
+                                <div class="col container">
+                                    <span class="row nutrition nutrition-value">
                                         {{dailyValue}}%
                                     </span>
-                                    <span>
+                                    <span class="row nutrition nutrition-label">
                                         DAILY VALUE
                                     </span>
                                 </div>
@@ -111,7 +111,7 @@
                         </div>
 
                         <div>
-                            Comments
+                            <h4>Comments</h4>
                         </div>
                     </div>
                 </div>
@@ -142,6 +142,7 @@
                         <input type="text" name="label" value="{{label}}" readonly />
                         <input type="text" name="image" value="{{image}}" readonly />
                         <input type="text" name="url" value="{{url}}" readonly />
+                        <input type="text" name="id" value="{{original_id}}" readonly />
                     </div>
                     <br>
                     <input type="submit" value="Add a comment" />
