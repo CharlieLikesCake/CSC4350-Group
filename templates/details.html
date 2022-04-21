@@ -113,6 +113,7 @@
                         <div>
                             <h4>Comments</h4>
                             {% for i in range(len_comments) %}
+
                             {% if comments[i].comment is not none or comments[i].rating is not none%}
                             <div>
                                 <div>
@@ -129,11 +130,6 @@
                             </div>
                             {% endif %}
                             {% endfor %}
-
-                            {% if len_comments == 0 %}
-                            <div class="ingredient">No Comments</div>
-                            {% endif %}
-
                         </div>
                     </div>
                 </div>
@@ -161,9 +157,9 @@
                     Ratings: <input type="number" name="rate" min="1" max="5" /><br>
                     Comment: <input type="text" name="comment" /> <br>
                     <div id="id">
-                        <input type="text" name="label" value="{{label}}" readonly />
-                        <input type="text" name="image" value="{{image}}" readonly />
-                        <input type="text" name="url" value="{{url}}" readonly />
+                        <input type="text" name="label" value="{{recipeDetails.label}}" readonly />
+                        <input type="text" name="image" value="{{recipeDetails.image}}" readonly />
+                        <input type="text" name="url" value="{{recipeDetails.url}}" readonly />
                         <input type="text" name="id" value="{{original_id}}" readonly />
                     </div>
                     <br>
