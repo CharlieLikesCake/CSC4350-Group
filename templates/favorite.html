@@ -14,6 +14,7 @@
 
     <h2>Saved Dishes</h2>
     {% for i in range(len_recipes) %}
+    {% if recipes[i].comment is none and recipes[i].rating is none %}
     <div class="card card1" style="width: 18rem;">
         <div>
             <form action="{{ url_for('details') }}" method="POST">
@@ -40,6 +41,7 @@
             </form>
         </div>
     </div>
+    {% endif %}
     {% endfor%}
 
     <script>

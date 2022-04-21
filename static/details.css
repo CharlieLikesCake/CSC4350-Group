@@ -26,3 +26,7 @@
 .nutrition-value {
     font-size: 20px;
 }
+
+.rating {
+    max-width: 65px;
+}

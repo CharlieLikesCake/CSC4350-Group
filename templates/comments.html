@@ -5,7 +5,7 @@
 <body>
     <div>
         {% for i in range(length) %}
-        {% if review[i].rating is not none and review[i].comment is not none %}
+        {% if review[i].rating is not none or review[i].comment is not none %}
         <div>
             Your review of {{ review[i].label }}:
         </div>
