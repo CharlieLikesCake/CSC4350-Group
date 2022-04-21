@@ -76,7 +76,6 @@ li a {
   text-decoration: none;
 }
 
-<<<<<<< HEAD
 li a:hover:not(.active) {
   background-color: #111;
 }
@@ -92,19 +91,15 @@ li a:hover:not(.active) {
   padding: 5px;
 
 }
-=======
-  .user{
-      margin-right: 50px;
-     color: red;
-     font-size: 25px;
-     padding: 5px;
-     
-  }
 
-  h2{
-      color: green;
-  }
+.user {
+  margin-right: 50px;
+  color: red;
+  font-size: 25px;
+  padding: 5px;
 
+}
 
-  
->>>>>>> b008ec930c3d3f937a1484fa562e633c364d4e88
+h2 {
+  color: green;
+}

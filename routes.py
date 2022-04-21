@@ -247,13 +247,7 @@ def savefromdetails():
         dailyValue = int(recipeDetails["totalDaily"]["ENERC_KCAL"]["quantity"])
 
         # for comments:
-        data = RecipeData.query.filter_by(recipeid=recipeID).all()
-        rating_list = []
-        comment_list = []
-
-        for i in data:
-            rating_list.append(i.rating)
-            comment_list.append(i.comment)
+        comments = RecipeData.query.filter_by(recipeid=recipeID).all()
 
         return flask.render_template(
             "details.html",
@@ -264,11 +258,11 @@ def savefromdetails():
             ingReco=ingReco,
             ingcatReco=ingcatReco,
             healthReco=healthReco,
-            rating=rating_list,
-            comment=comment_list,
             len_ing=len(recipeDetails["ingredientLines"]),
             calories=calories,
             dailyValue=dailyValue,
+            comments=comments,
+            len_comments=len(comments),
         )
 
 
@@ -304,7 +298,39 @@ def rating():
         db.session.add(rate_saved)
         db.session.commit()
 
-    return flask.redirect("/index")
+        recipeDetails = recipe.getRecipeDetails(id)
+        mealReco = recipeDetails["mealType"]
+        cuisineReco = recipeDetails["cuisineType"]
+        ingReco = recipeDetails["ingredients"]
+        ingReco = ingReco[0]["food"]
+        ingcatReco = recipeDetails["ingredients"]
+        ingcatReco = ingcatReco[0]["foodCategory"]
+        healthReco = recipeDetails["healthLabels"]
+
+        calories = int(recipeDetails["calories"])
+        dailyValue = int(recipeDetails["totalDaily"]["ENERC_KCAL"]["quantity"])
+
+        # for comments:
+        comments = RecipeData.query.filter_by(recipeid=id).all()
+
+        return flask.render_template(
+            "details.html",
+            recipeDetails=recipeDetails,
+            original_id=id,
+            mealReco=mealReco,
+            cuisineReco=cuisineReco,
+            ingReco=ingReco,
+            ingcatReco=ingcatReco,
+            healthReco=healthReco,
+            len_ing=len(recipeDetails["ingredientLines"]),
+            label=label,
+            image=image,
+            url=url,
+            calories=calories,
+            dailyValue=dailyValue,
+            comments=comments,
+            len_comments=len(comments),
+        )
 
 
 @app.route("/deletecomment", methods=["POST", "GET"])
