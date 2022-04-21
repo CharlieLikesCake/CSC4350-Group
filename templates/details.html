@@ -60,12 +60,12 @@
 
                     <form action="favorite" method="POST">
                         <div id="id">
-                            <input type="text" name="label" value="{{label}}" readonly />
-                            <input type="text" name="image" value="{{image}}" readonly />
-                            <input type="text" name="url" value="{{url}}" readonly />
-                            <input type="number" name="id" value="{{id}}" readonly />
+                            <input type="text" name="recipeLabel" value="{{recipeDetails.label}}" readonly />
+                            <input type="text" name="recipeImage" value="{{recipeDetails.image}}" readonly />
+                            <input type="text" name="recipeURL" value="{{recipeDetails.url}}" readonly />
+                            <input type="text" name="recipeID" value="{{id}}" readonly />
                         </div>
-                        <input type="submit" value="Save">
+                        <input type="submit" class="btn btn-outline-success" value="Save">
                     </form>
                 </div>
 

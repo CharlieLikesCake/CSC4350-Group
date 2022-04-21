@@ -131,10 +131,6 @@ def index():
 @login_required
 def details():
     id = flask.request.form.get("id")
-    label = flask.request.form.get("label")
-    image = flask.request.form.get("image")
-    url = flask.request.form.get("url")
-
     recipeDetails = recipe.getRecipeDetails(id)
     mealReco = recipeDetails["mealType"]
     cuisineReco = recipeDetails["cuisineType"]
@@ -143,6 +139,9 @@ def details():
     ingcatReco = recipeDetails["ingredients"]
     ingcatReco = ingcatReco[0]["foodCategory"]
     healthReco = recipeDetails["healthLabels"]
+
+    calories = int(recipeDetails["calories"])
+    dailyValue = int(recipeDetails["totalNutrients"]["ENERC_KCAL"]["quantity"])
 
     # for comments:
     data = RecipeData.query.all()
@@ -165,9 +164,8 @@ def details():
         rating=rating_list,
         comment=comment_list,
         len_ing=len(recipeDetails["ingredientLines"]),
-        label=label,
-        image=image,
-        url=url,
+        calories=calories,
+        dailyValue=dailyValue,
     )
 
 
