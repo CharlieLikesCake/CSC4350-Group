@@ -25,10 +25,10 @@
         <div>
             <a><img src="{{ recipes[i].image }}" /></a>
         </div>
-    </div>
+    </div id="id">
     <form method='POST' action="deletesaved">
-        <div id = "id">
-            <input type="text" name="reviewid" value="{{ recipes[i].recipe_id }}" readonly /><br>
+        <div>
+            <input type="text" name="reviewid" value="{{ recipes[i].recipeid }}" readonly /><br>
         </div>
         <input type=submit value="Delete Recipe" />
     </form>
