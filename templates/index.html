@@ -40,27 +40,12 @@
                         <input type="text" name="recipeLabel" value="{{recipes[i].label}}" readonly /><br>
                         <input type="text" name="recipeImage" value="{{recipes[i].image}}" readonly /><br>
                         <input type="text" name="recipeURL" value="{{recipes[i].url}}" readonly /><br>
-                        <input type="text" name="recipeID" value="{{recipes[i].id}}" readonly />
                     </div>
-                    <input type="submit" value="Save" />
+                    <input type="submit" class="btn btn-success" value="Save" />
                 </form>
-
-
-        <form id="form__submit" action="{{ url_for('details') }}" method="POST">
-            <input type="submit" value="{{recipes[i].label}}" />
-            <div id="id">
-                <input name="label" value="{{recipes[i].label}}" />
-                <input name="id" value="{{ recipes[i].id }}" readonly />
-                <input name="image" value="{{ recipes[i].image }}" readonly />
-                <input name="url" value="{{ recipes[i].url }}" readonly />
-
             </div>
-        </form>
         </div>
     </div>
-
-
-
     {% endfor %}
 
 
