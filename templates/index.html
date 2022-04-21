@@ -6,11 +6,12 @@
 </head>
 
 <body>
-    <a href="{{ url_for('logout') }}">Log out</a>
-    Currently logged in as {{username}}
-    <a href="{{ url_for('profile') }}">Saved Recipes</a>
-    <a href="{{ url_for('comments') }}">Comments</a>
-
+    <ul>
+        <li class="user">Hello {{username}}</li>
+        <li><a href="{{ url_for('profile') }}">Saved Recipes</a></li>
+        <li><a href="{{ url_for('comments') }}">Comments</a></li>
+        <li><a href="{{ url_for('logout') }}">Log out</a></li>
+    </ul>
     <div class="titlestyle">
         <h1>Looking for something new? Try these {{q}} dishes!</h1>
     </div>
