@@ -24,7 +24,7 @@
 
     {% for i in range(len_recipes) %}
     <div class="card" style="width: 18rem;">
-        <img src="{{ recipes[i].image }}" class="card-img-top" alt="...">
+        <img src="{{ recipes[i].image }}" class="card-img-top img-resize" alt="...">
         <div class="card-body">
             <h5 class="card-title">{{recipes[i].label}}</h5>
             <p class="card-text">Source: <a href="{{ recipes[i].url }}" target="_blank">{{recipes[i].source}}</a>

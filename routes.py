@@ -148,13 +148,7 @@ def details():
     dailyValue = int(recipeDetails["totalDaily"]["ENERC_KCAL"]["quantity"])
 
     # for comments:
-    data = RecipeData.query.filter_by(recipeid=id).all()
-    rating_list = []
-    comment_list = []
-
-    for i in data:
-        rating_list.append(i.rating)
-        comment_list.append(i.comment)
+    comments = RecipeData.query.filter_by(recipeid=id).all()
 
     return flask.render_template(
         "details.html",
@@ -165,14 +159,14 @@ def details():
         ingReco=ingReco,
         ingcatReco=ingcatReco,
         healthReco=healthReco,
-        rating=rating_list,
-        comment=comment_list,
         len_ing=len(recipeDetails["ingredientLines"]),
         label=label,
         image=image,
         url=url,
         calories=calories,
         dailyValue=dailyValue,
+        comments=comments,
+        len_comments=len(comments),
     )
 
 
@@ -218,10 +212,10 @@ def favorite():
 
 @app.route("/savefromdetails", methods=["POST"])
 def savefromdetails():
-    recipeImage = flask.request.form.get("image")
-    recipeLabel = flask.request.form.get("label")
-    recipeURL = flask.request.form.get("url")
-    recipeID = flask.request.form.get("id")
+    recipeImage = flask.request.form.get("recipeImage")
+    recipeLabel = flask.request.form.get("recipeLabel")
+    recipeURL = flask.request.form.get("recipeURL")
+    recipeID = flask.request.form.get("recipeID")
 
     checkDouble = RecipeData.query.filter_by(label=recipeLabel).first()
 
@@ -239,7 +233,43 @@ def savefromdetails():
     else:
         db.session.add(new_saved)
         db.session.commit()
-        return flask.redirect("/profile")
+
+        recipeDetails = recipe.getRecipeDetails(recipeID)
+        mealReco = recipeDetails["mealType"]
+        cuisineReco = recipeDetails["cuisineType"]
+        ingReco = recipeDetails["ingredients"]
+        ingReco = ingReco[0]["food"]
+        ingcatReco = recipeDetails["ingredients"]
+        ingcatReco = ingcatReco[0]["foodCategory"]
+        healthReco = recipeDetails["healthLabels"]
+
+        calories = int(recipeDetails["calories"])
+        dailyValue = int(recipeDetails["totalDaily"]["ENERC_KCAL"]["quantity"])
+
+        # for comments:
+        data = RecipeData.query.filter_by(recipeid=recipeID).all()
+        rating_list = []
+        comment_list = []
+
+        for i in data:
+            rating_list.append(i.rating)
+            comment_list.append(i.comment)
+
+        return flask.render_template(
+            "details.html",
+            recipeDetails=recipeDetails,
+            original_id=recipeID,
+            mealReco=mealReco,
+            cuisineReco=cuisineReco,
+            ingReco=ingReco,
+            ingcatReco=ingcatReco,
+            healthReco=healthReco,
+            rating=rating_list,
+            comment=comment_list,
+            len_ing=len(recipeDetails["ingredientLines"]),
+            calories=calories,
+            dailyValue=dailyValue,
+        )
 
 
 @app.route("/deletesaved", methods=["POST", "GET"])

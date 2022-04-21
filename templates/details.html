@@ -58,7 +58,7 @@
                             }}</a>
                     </div>
 
-                    <form action="favorite" method="POST">
+                    <form action="savefromdetails" method="POST">
                         <div id="id">
                             <input type="text" name="recipeLabel" value="{{recipeDetails.label}}" readonly />
                             <input type="text" name="recipeImage" value="{{recipeDetails.image}}" readonly />
@@ -112,6 +112,28 @@
 
                         <div>
                             <h4>Comments</h4>
+                            {% for i in range(len_comments) %}
+                            {% if comments[i].comment is not none or comments[i].rating is not none%}
+                            <div>
+                                <div>
+                                    <span>User {{comments[i].userid}}:</span>
+                                    {%if comments[i].rating is not none%}
+                                    <span>rated {{comments[i].rating}}/5</span>
+                                    {%endif%}
+                                </div>
+                                <div>
+                                    {%if comments[i].comment is not none%}
+                                    "{{comments[i].comment}}"
+                                    {%endif%}
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% if len_comments == 0 %}
+                            <div class="ingredient">No Comments</div>
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>
