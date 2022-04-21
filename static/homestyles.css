@@ -76,7 +76,6 @@ li a {
   text-decoration: none;
 }
 
-<<<<<<< HEAD
 li a:hover:not(.active) {
   background-color: #111;
 }
@@ -90,21 +89,20 @@ li a:hover:not(.active) {
   color: red;
   font-size: 25px;
   padding: 5px;
-
 }
-=======
-  .user{
-      margin-right: 50px;
-     color: red;
-     font-size: 25px;
-     padding: 5px;
-     
-  }
 
-  h2{
-      color: green;
-  }
-
-
+h2{
+  color: green;
+  text-align: center;
   
->>>>>>> b008ec930c3d3f937a1484fa562e633c364d4e88
+}
+
+.card1{
+  display: grid;
+  padding: 20px;
+  margin-bottom: 50px;
+  margin-left: 38%;
+  border-radius: 40px;
+  border: 4px solid pink;
+  
+}

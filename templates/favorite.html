@@ -1,14 +1,20 @@
 <html>
 
-<head></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="./static/homestyles.css">
+</head>
 
 <body>
-    <a href="{{ url_for('logout') }}">Log out</a>
-    <a href="{{ url_for('index') }}">Main Page</a>
+    <ul>
+        <li><a href="{{ url_for('index') }}">Main Page</a></li>
+        <li><a href="{{ url_for('profile') }}">Saved Recipes</a></li>
+        <li><a href="{{ url_for('comments') }}">Comments</a></li>
+        <li><a href="{{ url_for('logout') }}">Log out</a></li>
+    </ul>
 
-    <h1>Saved Dishes</h1>
+    <h2>Saved Dishes</h2>
     {% for i in range(len_recipes) %}
-    <div>
+    <div class="card card1" style="width: 18rem;">
         <div>
             <form action="{{ url_for('details') }}" method="POST">
                 <input type="submit" value="{{ recipes[i].label }}"></input>
@@ -25,13 +31,15 @@
         <div>
             <a><img src="{{ recipes[i].image }}" /></a>
         </div>
-    </div id="id">
-    <form method='POST' action="deletesaved">
         <div>
-            <input type="text" name="reviewid" value="{{ recipes[i].recipeid }}" readonly /><br>
+            <form method='POST' action="deletesaved">
+                <div id="id">
+                    <input type="text" name="reviewid" value="{{ recipes[i].recipeid }}" readonly /><br>
+                </div>
+                <input type=submit value="Delete Recipe" />
+            </form>
         </div>
-        <input type=submit value="Delete Recipe" />
-    </form>
+    </div>
     {% endfor%}
 
     <script>
