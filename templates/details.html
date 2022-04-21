@@ -28,13 +28,12 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
+                        Account
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="{{url_for('profile')}}">Saved Recipes</a>
+                        <a class="dropdown-item" href="{{url_for('comments')}}">Edit Comments</a>
+                        <a class="dropdown-item" href="{{url_for('logout')}}">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -110,12 +109,42 @@
                             </div>
                         </div>
 
-                        <div>
-                            <h4>Comments</h4>
+                        <div class="title-card border-bottom">
+                            <h4 class="ingredient">{{len_comments}} Comments</h4>
+                            <div>
+                                <form method='POST' action="rating">
+                                    <div class="container">
+                                        <div class="row">
+                                            <span class="col-xs-auto">
+                                                <span class="input-group mb-3">
+                                                    <input type="number" name="rate" class="form-control rating"
+                                                        aria-describedby="basic-addon2" min="1" max="5">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text" id="basic-addon2">/5</span>
+                                                    </div>
+                                                </span>
+                                            </span>
+                                            <div class="col">
+                                                <input type="text" name="comment" class="form-control"
+                                                    placeholder="Write a comment..." />
+                                            </div>
+                                            <div class="col-xs-auto ">
+                                                <input type="submit" class="btn btn-primary" value="Comment" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="id">
+                                        <input type="text" name="label" value="{{recipeDetails.label}}" readonly />
+                                        <input type="text" name="image" value="{{recipeDetails.image}}" readonly />
+                                        <input type="text" name="url" value="{{recipeDetails.url}}" readonly />
+                                        <input type="text" name="id" value="{{original_id}}" readonly />
+                                    </div>
+                                </form>
+                            </div>
                             {% for i in range(len_comments) %}
 
                             {% if comments[i].comment is not none or comments[i].rating is not none%}
-                            <div>
+                            <div class="ingredient">
                                 <div>
                                     <span>User {{comments[i].userid}}:</span>
                                     {%if comments[i].rating is not none%}
@@ -131,41 +160,39 @@
                             {% endif %}
                             {% endfor %}
                         </div>
+                        <div class="ingredient-box">
+                            <form action="{{ url_for('recommendations') }}" method="POST" onsubmit="submitForm();">
+                                <label for="categories">Browse Similar Recipes based on:</label>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <select id="categories" class="form-control">
+                                                <option value="{{mealReco}}">Meal</option>
+                                                <option value="{{cuisineReco}}">Cuisine</option>
+                                                <option value="{{ingReco}}">Ingredient</option>
+                                                <option value="{{ingcatReco}}">Ingredient Category</option>
+                                                <option value="{{healthReco}}">Health</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-auto">
+                                            <input type="submit" class="btn btn-primary" value="Search">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="keyword" id="keyword" value="">
+                                <input type="hidden" name="category" id="category" value="">
+                                <input type="hidden" name="original_label" value="{{recipeDetails.label}}">
+                                <input type="hidden" name="original_id" value="{{original_id}}">
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
 
 
-            <form action="{{ url_for('recommendations') }}" method="POST" onsubmit="submitForm();">
-                <label for="categories">Browse Similar Recipes based on:</label>
-                <select id="categories">
-                    <option value="{{mealReco}}">Meal</option>
-                    <option value="{{cuisineReco}}">Cuisine</option>
-                    <option value="{{ingReco}}">Ingredient</option>
-                    <option value="{{ingcatReco}}">Ingredient Category</option>
-                    <option value="{{healthReco}}">Health</option>
-                </select>
-                <input type="hidden" name="keyword" id="keyword" value="">
-                <input type="hidden" name="category" id="category" value="">
-                <input type="hidden" name="original_label" value="{{recipeDetails.label}}">
-                <input type="hidden" name="original_id" value="{{original_id}}">
-                <input type="submit" value="Search">
-            </form>
 
-            <div>
-                <form method='POST' action="rating">
-                    Ratings: <input type="number" name="rate" min="1" max="5" /><br>
-                    Comment: <input type="text" name="comment" /> <br>
-                    <div id="id">
-                        <input type="text" name="label" value="{{recipeDetails.label}}" readonly />
-                        <input type="text" name="image" value="{{recipeDetails.image}}" readonly />
-                        <input type="text" name="url" value="{{recipeDetails.url}}" readonly />
-                        <input type="text" name="id" value="{{original_id}}" readonly />
-                    </div>
-                    <br>
-                    <input type="submit" value="Add a comment" />
-                </form>
-            </div>
+
+
         </div>
     </div>
 
@@ -173,7 +200,7 @@
         const div = document.querySelectorAll("#id");
 
         for (let i = 0; i < div.length; i++) {
-            div[i].style.visibility = 'hidden';
+            div[i].style.display = 'none';
         }
 
         function submitForm() {

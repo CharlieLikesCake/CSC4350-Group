@@ -1,13 +1,24 @@
 <html>
 
-<head></head>
+    <head>
+        <link rel="stylesheet" type="text/css" href="./static/homestyles.css">
+    </head>
 
 <body>
-    <div>
+    <ul>
+        <li><a href="{{ url_for('index') }}">Main Page</a></li>
+        <li><a href="{{ url_for('profile') }}">Saved Recipes</a></li>
+        <li><a href="{{ url_for('comments') }}">Comments</a></li>
+        <li><a href="{{ url_for('logout') }}">Log out</a></li>
+    </ul>
+    <div class="card card1" style="width: 18rem;">
         {% for i in range(length) %}
-        {% if review[i].rating is not none and review[i].comment is not none %}
+        {% if review[i].rating is not none or review[i].comment is not none %}
         <div>
             Your review of {{ review[i].label }}:
+        </div>
+        <div>
+            <img src="{{ review[i].image }}" />
         </div>
         {%if review[i].rating is not none%}
         <div>
@@ -40,7 +51,6 @@
         {% endif %}
         {% endfor %}
     </div>
-
     <script>
         const div = document.querySelectorAll("#id");
 
