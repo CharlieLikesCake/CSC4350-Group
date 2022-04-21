@@ -131,6 +131,10 @@ def index():
 @login_required
 def details():
     id = flask.request.form.get("id")
+    label = flask.request.form.get("label")
+    image = flask.request.form.get("image")
+    url = flask.request.form.get("url")
+
     recipeDetails = recipe.getRecipeDetails(id)
     mealReco = recipeDetails["mealType"]
     cuisineReco = recipeDetails["cuisineType"]
@@ -139,9 +143,6 @@ def details():
     ingcatReco = recipeDetails["ingredients"]
     ingcatReco = ingcatReco[0]["foodCategory"]
     healthReco = recipeDetails["healthLabels"]
-
-    calories = int(recipeDetails["calories"])
-    dailyValue = int(recipeDetails["totalNutrients"]["ENERC_KCAL"]["quantity"])
 
     # for comments:
     data = RecipeData.query.all()
@@ -164,8 +165,9 @@ def details():
         rating=rating_list,
         comment=comment_list,
         len_ing=len(recipeDetails["ingredientLines"]),
-        calories=calories,
-        dailyValue=dailyValue,
+        label=label,
+        image=image,
+        url=url,
     )
 
 
@@ -190,6 +192,8 @@ def favorite():
     recipeImage = flask.request.form.get("recipeImage")
     recipeURL = flask.request.form.get("recipeURL")
     recipeID = flask.request.form.get("recipeID")
+    checkDouble = RecipeData.query.filter_by(label=recipeLabel).first()
+
     new_saved = RecipeData(
         label=recipeLabel,
         image=recipeImage,
@@ -198,9 +202,39 @@ def favorite():
         recipeid=recipeID,
     )
 
-    db.session.add(new_saved)
-    db.session.commit()
-    return flask.redirect("index")
+    if recipeLabel == checkDouble:
+        return flask.redirect("/profile")
+
+    else:
+        db.session.add(new_saved)
+        db.session.commit()
+        return flask.redirect("/profile")
+
+
+@app.route("/savefromdetails", methods=["POST"])
+def savefromdetails():
+    recipeImage = flask.request.form.get("image")
+    recipeLabel = flask.request.form.get("label")
+    recipeURL = flask.request.form.get("url")
+    recipeID = flask.request.form.get("id")
+
+    checkDouble = RecipeData.query.filter_by(label=recipeLabel).first()
+
+    new_saved = RecipeData(
+        label=recipeLabel,
+        image=recipeImage,
+        url=recipeURL,
+        userid=current_user.id,
+        recipeid=recipeID,
+    )
+
+    if recipeLabel == checkDouble:
+        return flask.redirect("/profile")
+
+    else:
+        db.session.add(new_saved)
+        db.session.commit()
+        return flask.redirect("/profile")
 
 
 @app.route("/deletesaved", methods=["POST", "GET"])
@@ -210,7 +244,7 @@ def deletesaved():
     db.session.delete(commdata)
     db.session.commit()
 
-    return flask.redirect("index")
+    return flask.redirect("/profile")
 
 
 @app.route("/rating", methods=["POST"])
