@@ -171,6 +171,8 @@ def details():
         label=label,
         image=image,
         url=url,
+        calories=calories,
+        dailyValue=dailyValue,
     )
 
 
