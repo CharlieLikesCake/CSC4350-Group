@@ -374,7 +374,7 @@ def editcomments():
     commdata.comment = editcomm
     commdata.rating = editrate
     db.session.commit()
-    return flask.redirect("index")
+    return flask.redirect("/comments")
 
 
 if __name__ == "__main__":
